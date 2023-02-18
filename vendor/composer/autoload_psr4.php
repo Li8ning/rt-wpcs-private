@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Speed\\RtSlideshow\\' => array($baseDir . '/src'),
+    'RTSlideshow\\' => array($baseDir . '/src'),
 );
