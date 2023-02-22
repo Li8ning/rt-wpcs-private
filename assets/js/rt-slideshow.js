@@ -26,9 +26,17 @@ $(document).ready(function() {
                 var ids = [];
                 selection.map(function(attachment) {
                     attachment = attachment.toJSON();
+                    console.log($.inArray(attachment.id,$('#rt_slideshow_image_ids').val()));
+                    // if($.inArray(attachment.id,$('#rt_slideshow_image_ids').val()) == -1){
+
+                    // }
                     ids.push(attachment.id);
                     $('#rt_slideshow_image_list').append('<li data-id="' +attachment.id+ '"><span style="background-image:url('+ attachment.url +')"></span><a href="#" class="rt-slideshow-remove">&times;</a></li>');
                 });
+                console.log('already selected');
+                console.log($('#rt_slideshow_image_ids').val());
+                console.log('newly selected');
+                console.log(ids);
                 $('#rt_slideshow_image_ids').val(ids.join(','));
             });
         }
@@ -43,7 +51,6 @@ $(document).ready(function() {
             imageIds.forEach(function(id) {
                 console.log('select-> '+id);
                 var attachment = wp.media.attachment(id);
-                console.log(attachment);
                 attachment.fetch();
                 rt_slideshow_uploader.state().get('selection').add(attachment ? [attachment] : []);
             });
