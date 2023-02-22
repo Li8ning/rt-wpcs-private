@@ -1,0 +1,14 @@
+#rt_slideshow_image_list{
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+}
+
+#rt_slideshow_image_list li span{
+    height: 120px;
+    width: 120px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: block;
+}

@@ -20,3 +20,6 @@ require_once plugin_dir_path( __FILE__ ) . 'src/RTSlideshow.php';
 
 // Instantiate the plugin class
 $rt_slideshow = new RTSlideshow\RTSlideshow();
+
+// Activation and deactivation hooks
+register_activation_hook( __FILE__, array( $rt_slideshow, 'activate' ) );
