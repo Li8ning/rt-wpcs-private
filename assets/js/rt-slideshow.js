@@ -7,6 +7,24 @@ $(document).ready(function() {
         console.log('click add image');
         e.preventDefault();
 
+        // Initiliaze variables
+        let imageIds = [];
+        // Set selected images IDs in the media uploader
+        if($('#rt_slideshow_image_ids').val() != ''){
+            console.log('Selected images');
+            imageIds = $.map( $('#rt_slideshow_image_ids').val().split(","), function( val ){
+                return parseInt( val )
+            });
+            console.log(imageIds);
+            rt_slideshow_uploader.state().get('selection').reset();
+            imageIds.forEach(function(id) {
+                console.log('select-> '+id);
+                var attachment = wp.media.attachment(id);
+                attachment.fetch();
+                rt_slideshow_uploader.state().get('selection').add(attachment ? [attachment] : []);
+            });
+        }
+
         // If the uploader object has already been created, reopen the dialog
         if (!rt_slideshow_uploader) {
             rt_slideshow_uploader = wp.media({
@@ -19,42 +37,27 @@ $(document).ready(function() {
             });
 
             // When a file is selected, grab its ID and add it to the input field
-            console.log('When images are selected in window');
             rt_slideshow_uploader.on('select', function() {
                 console.log('images selected');
                 var selection = rt_slideshow_uploader.state().get('selection');
                 var ids = [];
+                console.log('already selected');
+                console.log(imageIds);
                 selection.map(function(attachment) {
                     attachment = attachment.toJSON();
-                    console.log($.inArray(attachment.id,$('#rt_slideshow_image_ids').val()));
+                    console.log($.inArray(attachment.id,imageIds));
                     // if($.inArray(attachment.id,$('#rt_slideshow_image_ids').val()) == -1){
 
                     // }
                     ids.push(attachment.id);
                     $('#rt_slideshow_image_list').append('<li data-id="' +attachment.id+ '"><span style="background-image:url('+ attachment.url +')"></span><a href="#" class="rt-slideshow-remove">&times;</a></li>');
                 });
-                console.log('already selected');
-                console.log($('#rt_slideshow_image_ids').val());
                 console.log('newly selected');
                 console.log(ids);
                 $('#rt_slideshow_image_ids').val(ids.join(','));
             });
         }
-        
 
-        // Set selected images IDs in the media uploader
-        if($('#rt_slideshow_image_ids').val() != ''){
-            console.log('Selected images');
-            var imageIds = $('#rt_slideshow_image_ids').val().split(",");
-            console.log(imageIds);
-            rt_slideshow_uploader.state().get('selection').reset();
-            imageIds.forEach(function(id) {
-                console.log('select-> '+id);
-                var attachment = wp.media.attachment(id);
-                attachment.fetch();
-                rt_slideshow_uploader.state().get('selection').add(attachment ? [attachment] : []);
-            });
-        }
         // Open the uploader dialog
         rt_slideshow_uploader.open();
     });
