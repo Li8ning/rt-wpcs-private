@@ -8,6 +8,7 @@ $(document).ready(function() {
         e.preventDefault();
 
         // Initiliaze variables
+        let counter = 1;
         let imageIds = [];
         // Set selected images IDs in the media uploader
         if($('#rt_slideshow_image_ids').val() != ''){
@@ -22,7 +23,9 @@ $(document).ready(function() {
                 var attachment = wp.media.attachment(id);
                 attachment.fetch();
                 rt_slideshow_uploader.state().get('selection').add(attachment ? [attachment] : []);
+                counter++;
             });
+            console.log('count'+counter);
         }
 
         // If the uploader object has already been created, reopen the dialog
@@ -32,8 +35,11 @@ $(document).ready(function() {
                 button: {
                     text: 'Add to Slideshow'
                 },
-                multiple: true,
-                library : { type : 'image' }
+                multiple: 'add',
+                library : { 
+                    type : 'image',
+                    count : counter
+                }
             });
 
             // When a file is selected, grab its ID and add it to the input field
@@ -43,6 +49,7 @@ $(document).ready(function() {
                 var ids = [];
                 console.log('already selected');
                 console.log(imageIds);
+                console.log('count'+count);
                 selection.map(function(attachment) {
                     attachment = attachment.toJSON();
                     console.log($.inArray(attachment.id,imageIds));
