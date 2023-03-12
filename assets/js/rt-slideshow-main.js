@@ -1,4 +1,4 @@
-const swiper = new Swiper('#rt-swiper-slider.swiper', {
+var swiper = new Swiper('#rt-swiper-slider.swiper', {
     // Optional parameters
     direction: 'horizontal',
     loop: true,

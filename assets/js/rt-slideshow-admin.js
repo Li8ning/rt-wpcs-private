@@ -1,4 +1,4 @@
-const $ = jQuery;
+var $ = jQuery;
 
 $(document).ready(function() {
 
@@ -76,8 +76,8 @@ $(document).ready(function() {
 
             rt_slideshow_uploader.on('select', function() {
 
-                let imageIds = [];
-                const imageIdsHiddenField = $('#rt_slideshow_image_ids').val();
+                var imageIds = [];
+                var imageIdsHiddenField = $('#rt_slideshow_image_ids').val();
                 console.log('current selection');
                 console.log(imageIdsHiddenField);
 
@@ -86,7 +86,7 @@ $(document).ready(function() {
                 if (imageIdsHiddenField != '') {
                     imageIds = $.map( imageIdsHiddenField.split(","), function( val ){
 
-                        return parseInt( val )
+                        return parseInt( val );
         
                     });   
                 }
@@ -122,13 +122,13 @@ $( '#rt_slideshow_image_list' ).on( 'click', '.rt-slideshow-remove', function( e
 
     e.preventDefault();
 
-    const button = $(this) // .rt-slideshow-remove
-    const container = button.parent().parent() // #rt_slideshow_image_list
-    const elementIndex = container.children('li').index( button.parent() ); // index of li element
-    const hiddenField = container.next() // #rt_slideshow_image_ids
-    const hiddenFieldValue = $.map( hiddenField.val().split(","), function( val ){
+    var button = $(this); // .rt-slideshow-remove
+    var container = button.parent().parent(); // #rt_slideshow_image_list
+    var elementIndex = container.children('li').index( button.parent() ); // index of li element
+    var hiddenField = container.next(); // #rt_slideshow_image_ids
+    var hiddenFieldValue = $.map( hiddenField.val().split(","), function( val ){
 
-        return parseInt( val )
+        return parseInt( val );
 
     });
 
@@ -158,8 +158,8 @@ $( '#rt_slideshow_image_list' ).sortable({
 	stop: function( event, ui ){
 		ui.item.removeAttr( 'style' );
 
-		let sort = new Array() // array of image IDs
-		const container = $(this) // #rt_slideshow_image_list
+		var sort = []; // array of image IDs
+		var container = $(this); // #rt_slideshow_image_list
 
 		// each time after dragging we resort our array
 		container.find( 'li' ).each( function( index ){

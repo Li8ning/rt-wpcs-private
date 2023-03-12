@@ -28,27 +28,31 @@
 		<?php
 
 		// Get the saved image IDs.
-		$image_ids = explode( ',', get_option( 'rt_slideshow_image_ids', array() ) );
+		$get_image_ids = get_option( 'rt_slideshow_image_ids', array() );
+		$image_ids = [];
+		if ( ! empty( $get_image_ids ) ) {
+			$image_ids = explode( ',', get_option( 'rt_slideshow_image_ids', array() ) );
 
-		// Loop through each saved image ID and display them.
-		foreach ( $image_ids as $image_id ) {
+			// Loop through each saved image ID and display them.
+			foreach ( $image_ids as $image_id ) {
 
-			$image_url = wp_get_attachment_image_url( $image_id, 'thumbnail' );
+				$image_url = wp_get_attachment_image_url( $image_id, 'thumbnail' );
 
-			if ( $image_url ) {
+				if ( $image_url ) {
 
-				?>
+					?>
 
-				<li data-id="<?php echo esc_attr( $image_id ); ?>">
+					<li data-id="<?php echo esc_attr( $image_id ); ?>">
 
-					<span style="background-image:url('<?php echo esc_url( $image_url ); ?>')"></span>
+						<span style="background-image:url('<?php echo esc_url( $image_url ); ?>')"></span>
 
-					<a href="#" class="rt-slideshow-remove">&times;</a>
+						<a href="#" class="rt-slideshow-remove">&times;</a>
 
-				</li>
+					</li>
 
-				<?php
+					<?php
 
+				}
 			}
 		}
 		?>
