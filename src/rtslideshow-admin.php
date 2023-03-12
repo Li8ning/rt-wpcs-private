@@ -29,7 +29,7 @@
 
 		// Get the saved image IDs.
 		$get_image_ids = get_option( 'rt_slideshow_image_ids', array() );
-		$image_ids = [];
+		$image_ids     = array();
 		if ( ! empty( $get_image_ids ) ) {
 			$image_ids = explode( ',', get_option( 'rt_slideshow_image_ids', array() ) );
 

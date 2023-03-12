@@ -49,6 +49,9 @@ class RTSlideshow {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_front_end_scripts' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 
+		// Add shortcode to display slideshow.
+		add_shortcode( 'rtslideshow', array( $this, 'rt_slideshow_shortcode' ) );
+
 		if ( is_admin() ) {
 
 			// Add admin menu page to manage slideshow.
@@ -166,9 +169,6 @@ class RTSlideshow {
 
 		// Store image ids in database.
 		add_option( 'rt_slideshow_image_ids', array() );
-
-		// Add shortcode to display slideshow.
-		add_shortcode( 'rtslideshow', array( $this, 'rt_slideshow_shortcode' ) );
 
 		// Flush rewrite rules to ensure custom post types are registered.
 		flush_rewrite_rules();

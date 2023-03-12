@@ -1,22 +1,22 @@
 var swiper = new Swiper('#rt-swiper-slider.swiper', {
-    // Optional parameters
-    direction: 'horizontal',
-    loop: true,
-  
-    // If we need pagination
-    pagination: {
-      el: '.swiper-pagination',
-    },
+  // Optional parameters
+  direction: 'horizontal',
+  loop: true,
 
-    // Center Slides
-    centeredSlides: true,
+  // If we need pagination
+  pagination: {
+    el: '.swiper-pagination',
+  },
 
-    // Modify default container swiper class
-    containerModifierClass: 'rt-swiper-',
-  
-    // Navigation arrows
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    }
+  // Center Slides
+  centeredSlides: true,
+
+  // Modify default container swiper class
+  containerModifierClass: 'rt-swiper-',
+
+  // Navigation arrows
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+  }
 });
