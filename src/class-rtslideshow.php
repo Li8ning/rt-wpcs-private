@@ -76,8 +76,8 @@ class RTSlideshow {
 		}
 
 		// Enqueue jQuery UI stylesheets and scripts.
-		wp_enqueue_style( 'jquery-ui-css', plugins_url( 'lib/jquery-ui-1.13.2.custom/jquery-ui.min.css', dirname( __FILE__ ) ), array(), '1.13.2' );
-		wp_enqueue_script( 'jquery-ui-js', plugins_url( 'lib/jquery-ui-1.13.2.custom/jquery-ui.min.js', dirname( __FILE__ ) ), array(), '1.13.2', true );
+		wp_enqueue_style( 'rt-jquery-ui-css', plugins_url( 'lib/jquery-ui-1.13.2.custom/jquery-ui.min.css', dirname( __FILE__ ) ), array(), '1.13.2' );
+		wp_enqueue_script( 'rt-jquery-ui-js', plugins_url( 'lib/jquery-ui-1.13.2.custom/jquery-ui.min.js', dirname( __FILE__ ) ), array(), '1.13.2', true );
 
 		// Enqueue plugin admin scripts.
 		wp_enqueue_script( 'rt-slideshow-admin-script', plugins_url( 'assets/js/rt-slideshow-admin.js', dirname( __FILE__ ) ), array(), '1.0.0', true );
@@ -95,8 +95,8 @@ class RTSlideshow {
 	public function enqueue_front_end_scripts() {
 
 		// Enqueue jQuery UI stylesheets and scripts.
-		wp_enqueue_style( 'swiper-css', plugins_url( 'lib/swiper-9.1.0/swiper-bundle.min.css', dirname( __FILE__ ) ), array(), '9.1.0' );
-		wp_enqueue_script( 'jquery-ui-js', plugins_url( 'lib/swiper-9.1.0/swiper-bundle.min.js', dirname( __FILE__ ) ), array(), '9.1.0', true );
+		wp_enqueue_style( 'rt-swiper-css', plugins_url( 'lib/swiper-9.1.0/swiper-bundle.min.css', dirname( __FILE__ ) ), array(), '9.1.0' );
+		wp_enqueue_script( 'rt-swiper-js', plugins_url( 'lib/swiper-9.1.0/swiper-bundle.min.js', dirname( __FILE__ ) ), array(), '9.1.0', true );
 
 		// Enqueue plugin main scripts.
 		wp_enqueue_script( 'rt-slideshow-main-script', plugins_url( 'assets/js/rt-slideshow-main.js', dirname( __FILE__ ) ), array(), '1.0.0', true );
@@ -129,6 +129,38 @@ class RTSlideshow {
 
 		// Flush rewrite rules to ensure custom post types are registered.
 		flush_rewrite_rules();
+
+	}
+
+	/**
+	 * Deactivate the plugin.
+	 */
+	public function deactivate() {
+
+		// Remove admin styles and scripts.
+		// Dequeue jQuery UI stylesheets and scripts.
+		wp_dequeue_style( 'rt-jquery-ui-css' );
+		wp_dequeue_script( 'rt-jquery-ui-js' );
+
+		// Dequeue plugin admin scripts.
+		wp_dedqueue_script( 'rt-slideshow-admin-script' );
+
+		// Dequeue plugin admin stylesheets.
+		wp_dequeue_style( 'rt-slideshow-admin-styles' );
+
+		// Remove front end styles and scripts.
+		// Dequeue jQuery UI stylesheets and scripts.
+		wp_dequeue_style( 'rt-swiper-css' );
+		wp_dequeue_script( 'rt-swiper-js' );
+
+		// Dequeue plugin main scripts.
+		wp_dequeue_script( 'rt-slideshow-main-script' );
+
+		// Dequeue plugin main stylesheets.
+		wp_dequeue_style( 'rt-slideshow-main-styles' );
+
+		// Remove registered shortcode.
+		remove_shortcode( 'rtslideshow' );
 
 	}
 
