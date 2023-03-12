@@ -13,13 +13,16 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
+
 	exit;
+
 }
 
-require_once plugin_dir_path( __FILE__ ) . 'src/RTSlideshow.php';
+require_once plugin_dir_path( __FILE__ ) . 'src/class-rtslideshow.php';
 
-// Instantiate the plugin class
+// Instantiate the plugin class.
 $rt_slideshow = new RTSlideshow\RTSlideshow();
 
-// Activation and deactivation hooks
+// Activation and deactivation hooks.
 register_activation_hook( __FILE__, array( $rt_slideshow, 'activate' ) );
+

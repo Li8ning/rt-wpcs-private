@@ -1,0 +1,4 @@
+- wp media integrated
+- images saved to db
+- beautified the main page html
+- Image removal successfull even for duplicates

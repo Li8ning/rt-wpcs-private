@@ -1,0 +1,45 @@
+#rt_slideshow_image_list{
+
+    display: flex;
+
+    flex-direction: row;
+
+    column-gap: 15px;
+
+}
+
+
+
+#rt_slideshow_image_list li span{
+
+    height: 120px;
+
+    width: 120px;
+
+    background-position: center;
+
+    background-repeat: no-repeat;
+
+    background-size: cover;
+
+    display: block;
+    border-radius: 5px;
+    border: 2px solid white;
+
+}
+
+#rt_slideshow_image_list li a{
+    text-decoration: none;
+    border-radius: 100%;
+    color: black;
+    background-color: white;
+    box-shadow: 0px 0px 5px 1px #00000029;
+    width: 20px;
+    height: 20px;
+    display: block;
+    text-align: center;
+    font-size: 18px;
+    position: relative;
+    bottom: 130px;
+    left: 110px;
+}
