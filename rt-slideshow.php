@@ -27,4 +27,6 @@ $rt_slideshow = new RTSlideshow\RTSlideshow();
 register_activation_hook( __FILE__, array( $rt_slideshow, 'activate' ) );
 // Deactivation hook.
 register_deactivation_hook( __FILE__, array( $rt_slideshow, 'deactivate' ) );
+// Uninstall hook.
+register_uninstall_hook( __FILE__, array( $rt_slideshow, 'uninstall' ) );
 

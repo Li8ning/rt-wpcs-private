@@ -8,7 +8,6 @@
 namespace RTSlideshow;
 
 // Exit if accessed directly.
-
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -41,6 +40,7 @@ class RTSlideshow {
 	 * @since 1.0.0
 	 */
 	public function __construct() {
+
 		$this->plugin_name = 'rt-slideshow';
 		$this->version     = '1.0.0';
 
@@ -48,9 +48,6 @@ class RTSlideshow {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_front_end_scripts' ) );
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
-
-		// Add shortcode to display slideshow.
-		add_shortcode( 'rtslideshow', array( $this, 'rt_slideshow_shortcode' ) );
 
 		if ( is_admin() ) {
 
@@ -106,36 +103,12 @@ class RTSlideshow {
 
 	}
 
-
-
 	/**
-	 * Add settings page to the admin menu.
+	 * Dequeue admin scripts and styles.
 	 *
 	 * @since 1.0.0
 	 */
-	public function add_admin_menu() {
-
-		add_menu_page( 'RT Slideshow', 'RT Slideshow', 'manage_options', 'rt-slideshow', array( $this, 'render_main_page' ), 'dashicons-images-alt2' );
-
-	}
-
-	/**
-	 * Activate the plugin.
-	 */
-	public function activate() {
-
-		// Store image ids in database.
-		add_option( 'rt_slideshow_image_ids', array() );
-
-		// Flush rewrite rules to ensure custom post types are registered.
-		flush_rewrite_rules();
-
-	}
-
-	/**
-	 * Deactivate the plugin.
-	 */
-	public function deactivate() {
+	public function dequeue_admin_scripts() {
 
 		// Remove admin styles and scripts.
 		// Dequeue jQuery UI stylesheets and scripts.
@@ -148,6 +121,15 @@ class RTSlideshow {
 		// Dequeue plugin admin stylesheets.
 		wp_dequeue_style( 'rt-slideshow-admin-styles' );
 
+	}
+
+	/**
+	 * Dequeue front end scripts and styles.
+	 *
+	 * @since 1.0.0
+	 */
+	public function dequeue_front_end_scripts() {
+
 		// Remove front end styles and scripts.
 		// Dequeue jQuery UI stylesheets and scripts.
 		wp_dequeue_style( 'rt-swiper-css' );
@@ -159,16 +141,76 @@ class RTSlideshow {
 		// Dequeue plugin main stylesheets.
 		wp_dequeue_style( 'rt-slideshow-main-styles' );
 
-		// Remove registered shortcode.
-		remove_shortcode( 'rtslideshow' );
+	}
+
+	/**
+	 * Add plugin settings page to the admin menu.
+	 *
+	 * @since 1.0.0
+	 */
+	public function add_admin_menu() {
+
+		add_menu_page( 'RT Slideshow', 'RT Slideshow', 'manage_options', 'rt-slideshow', array( $this, 'render_main_page' ), 'dashicons-images-alt2' );
 
 	}
 
 	/**
+	 * Activate the plugin.
+	 *
+	 * This function will be executed when the plugin is activated. It will register required option
+	 * and shortcode.
+	 *
+	 * @since 1.0.0
+	 */
+	public function activate() {
+
+		// Store image ids in database.
+		add_option( 'rt_slideshow_image_ids', array() );
+
+		// Add shortcode to display slideshow.
+		add_shortcode( 'rtslideshow', array( $this, 'rt_slideshow_shortcode' ) );
+
+		// Flush rewrite rules to ensure custom post types are registered.
+		flush_rewrite_rules();
+
+	}
+
+	/**
+	 * Deactivate the plugin.
+	 *
+	 * This function will be executed when the plugin is deactivated. It will dequeue styles and scripts
+	 * and remove registered shortcodes.
+	 *
+	 * @since 1.0.0
+	 */
+	public function deactivate() {
+
+		include_once dirname( __FILE__ ) . '/rtslideshow-deactivate.php';
+
+	}
+
+	/**
+	 * Uninstall the plugin.
+	 *
+	 * This function will be executed when the plugin is uninstalled. It will dequeue styles and scripts
+	 * , remove registered shortcodes and remove any data stored by the plugin.
+	 *
+	 * @since 1.0.0
+	 */
+	public function uninstall() {
+
+		include_once dirname( __FILE__ ) . '/rtslideshow-uninstall.php';
+	}
+
+	/**
 	 * Sanitize options value.
+	 *
+	 * @since 1.0.0
 	 */
 	public function register_settings() {
+
 		register_setting( 'rt-slideshow-settings-group', 'rt_slideshow_image_ids' );
+
 	}
 
 
