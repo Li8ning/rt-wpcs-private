@@ -119,7 +119,7 @@ class RTSlideshow {
 		wp_dequeue_script( 'rt-jquery-ui-js' );
 
 		// Dequeue plugin admin scripts.
-		wp_dedqueue_script( 'rt-slideshow-admin-script' );
+		wp_dequeue_script( 'rt-slideshow-admin-script' );
 
 		// Dequeue plugin admin stylesheets.
 		wp_dequeue_style( 'rt-slideshow-admin-styles' );
