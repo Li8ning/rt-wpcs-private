@@ -13,7 +13,8 @@
 	"homepage": "https://github.com/rtlearn/wpcs-Li8ning",
 	"require-dev": {
 		"wp-coding-standards/wpcs": "^2.3",
-		"phpcompatibility/phpcompatibility-wp": "^2.1"
+		"phpcompatibility/phpcompatibility-wp": "^2.1",
+        "yoast/phpunit-polyfills": "^1.0"
 	},
 	"config": {
 		"allow-plugins": {
