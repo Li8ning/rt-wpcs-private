@@ -5,6 +5,8 @@
  * @package RTSlideshow
  */
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
 class RTSlideshow_Activate_Test extends WP_UnitTestCase {
 
 	protected $rt_slideshow;
