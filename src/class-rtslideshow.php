@@ -255,3 +255,5 @@ class RTSlideshow {
 	}
 
 }
+
+new RTSlideshow();
