@@ -13,17 +13,6 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit();
 }
 
-require_once plugin_dir_path( __FILE__ ) . 'class-rtslideshow.php';
-
-// Create an instance of the RTSlideshow class.
-$rt_slideshow = new RTSlideshow\RTSlideshow();
-
-// Dequeue admin styles and scripts
-$rt_slideshow->dequeue_admin_scripts();
-
-// Dequeue front end styles and scripts
-$rt_slideshow->dequeue_front_end_scripts();
-
 // Remove the menu page.
 remove_menu_page( 'rt-slideshow' );
 

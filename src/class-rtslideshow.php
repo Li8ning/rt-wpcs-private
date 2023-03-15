@@ -59,6 +59,9 @@ class RTSlideshow {
 
 		}
 
+		// Deactivation hook.
+		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
+
 	}
 
 	/**
@@ -170,12 +173,6 @@ class RTSlideshow {
 		// Store image ids in database.
 		add_option( 'rt_slideshow_image_ids', array() );
 
-		// Deactivation hook.
-		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
-
-		// Uninstall hook.
-		register_uninstall_hook( __FILE__, array( $this, 'uninstall' ) );
-
 		// Flush rewrite rules to ensure custom post types are registered.
 		flush_rewrite_rules();
 
@@ -193,19 +190,6 @@ class RTSlideshow {
 
 		include_once dirname( __FILE__ ) . '/rtslideshow-deactivate.php';
 
-	}
-
-	/**
-	 * Uninstall the plugin.
-	 *
-	 * This function will be executed when the plugin is uninstalled. It will dequeue styles and scripts
-	 * , remove registered shortcodes and remove any data stored by the plugin.
-	 *
-	 * @since 1.0.0
-	 */
-	public function uninstall() {
-
-		include_once plugin_dir_path( __FILE__ ) . '/uninstall.php';
 	}
 
 	/**
