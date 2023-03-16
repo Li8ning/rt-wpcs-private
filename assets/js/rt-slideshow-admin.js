@@ -38,8 +38,6 @@ $(document).ready(function () {
 
                 var imageIds = [];
                 var imageIdsHiddenField = $('#rt_slideshow_image_ids').val();
-                console.log('current selection');
-                console.log(imageIdsHiddenField);
 
                 var selection = rt_slideshow_uploader.state().get('selection');
 

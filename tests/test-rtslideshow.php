@@ -120,4 +120,67 @@ class Test_rtslideshow extends WP_UnitTestCase {
 
 	}
 
+	/**
+	 * Unit test for the register_settings() method of the RTSlideshow class.
+	 * 
+	 * Ensures that the register_setting() function is called with the correct parameters.
+	 * 
+	 * @since 1.0.0
+	 */
+	public function test_register_settings() {
+
+		$rtslideshow = new RTSlideshow();
+		
+		// Call the register_settings() method to register the settings.
+		$rtslideshow->register_settings();
+		
+		// Assert that the register_setting() function was called with the correct parameters.
+		$this->assertSettingsRegistered('rt-slideshow-settings-group', 'rt_slideshow_image_ids');
+
+	}
+	
+	/**
+	 * Helper method to assert that a setting was registered.
+	 * 
+	 * @param string $settings_group The settings group to which the setting belongs.
+	 * 
+	 * @param string $setting_name The name of the setting to check.
+	 */
+	private function assertSettingsRegistered($settings_group, $setting_name) {
+
+		// Get the registered settings from WordPress.
+		$registered_settings = get_registered_settings();
+		
+		// Check if the setting is registered.
+		$this->assertArrayHasKey($setting_name, $registered_settings);
+		$this->assertEquals($settings_group, $registered_settings[$setting_name]['group']);
+
+	}
+	
+	/**
+	* Test if main page is rendered correctly.
+	*
+	* @since 1.0.0
+	*/
+	public function test_render_main_page() {
+
+		$rtslideshow = new RTSlideshow();
+
+		// Set up current user as an administrator.
+		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $user_id );
+
+		// Render the main page.
+		ob_start();
+		$rtslideshow->render_main_page();
+		$output = ob_get_clean();
+
+		print_r( $output );
+
+		// Assert that output contains the expected text.
+		$this->assertContains( '<input type="hidden" name="rt_slideshow_image_ids" id="rt_slideshow_image_ids" value="" />', $output );
+		// $this->assertContains( 'Save Changes', $output );
+
+	}
+
 }

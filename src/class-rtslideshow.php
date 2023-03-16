@@ -59,9 +59,6 @@ class RTSlideshow {
 
 		}
 
-		// Deactivation hook.
-		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
-
 	}
 
 	/**
@@ -219,7 +216,7 @@ class RTSlideshow {
 		}
 
 		// Render the main page.
-		include_once dirname( __FILE__ ) . '/rtslideshow-admin.php';
+		require_once plugin_dir_path( __FILE__ ) . '../templates/rtslideshow-admin.php';
 
 	}
 
@@ -232,12 +229,10 @@ class RTSlideshow {
 
 		ob_start();
 		// Render the main page.
-		include dirname( __FILE__ ) . '/rtslideshow-slider.php';
+		require_once plugin_dir_path( __FILE__ ) . '../templates/rtslideshow-slider.php';
 		$content = ob_get_clean();
 		return $content;
 
 	}
 
 }
-
-new RTSlideshow();
