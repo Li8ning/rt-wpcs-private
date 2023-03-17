@@ -221,14 +221,14 @@ class RTSlideshow {
 	}
 
 	/**
-	 * Render the main page.
+	 * Render the slider.
 	 *
 	 * @since 1.0.0
 	 */
 	public function rt_slideshow_shortcode() {
 
 		ob_start();
-		// Render the main page.
+		// Render the slider.
 		require_once plugin_dir_path( __FILE__ ) . '../templates/rtslideshow-slider.php';
 		$content = ob_get_clean();
 		return $content;
