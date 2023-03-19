@@ -50,7 +50,7 @@ class RTSlideshow {
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 
 		// Add shortcode to display slideshow.
-		add_shortcode( 'rtslideshow', array( $this, 'rt_slideshow_shortcode' ) );
+		add_shortcode( 'rtslideshow', array( $this, 'rt_slideshow_slider' ) );
 
 		if ( is_admin() ) {
 
@@ -225,7 +225,7 @@ class RTSlideshow {
 	 *
 	 * @since 1.0.0
 	 */
-	public function rt_slideshow_shortcode() {
+	public function rt_slideshow_slider() {
 
 		ob_start();
 		// Render the slider.
