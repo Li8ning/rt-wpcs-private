@@ -75,10 +75,6 @@ class RTSlideshow {
 
 		}
 
-		// Enqueue jQuery UI stylesheets and scripts.
-		wp_enqueue_style( 'rt-jquery-ui-css', plugins_url( 'lib/jquery-ui-1.13.2.custom/jquery-ui.min.css', dirname( __FILE__ ) ), array(), '1.13.2' );
-		wp_enqueue_script( 'rt-jquery-ui-js', plugins_url( 'lib/jquery-ui-1.13.2.custom/jquery-ui.min.js', dirname( __FILE__ ) ), array(), '1.13.2', true );
-
 		// Enqueue plugin admin scripts.
 		wp_enqueue_script( 'rt-slideshow-admin-script', plugins_url( 'assets/js/rt-slideshow-admin.js', dirname( __FILE__ ) ), array(), '1.0.0', true );
 
@@ -114,10 +110,6 @@ class RTSlideshow {
 	public function dequeue_admin_scripts() {
 
 		// Remove admin styles and scripts.
-		// Dequeue jQuery UI stylesheets and scripts.
-		wp_dequeue_style( 'rt-jquery-ui-css' );
-		wp_dequeue_script( 'rt-jquery-ui-js' );
-
 		// Dequeue plugin admin scripts.
 		wp_dequeue_script( 'rt-slideshow-admin-script' );
 
