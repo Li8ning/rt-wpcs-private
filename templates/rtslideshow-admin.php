@@ -59,7 +59,7 @@
 
 		</ul>
 
-		<input type="hidden" name="rt_slideshow_image_ids" id="rt_slideshow_image_ids" value="<?php echo esc_attr( join( ',', $image_ids ) ); ?>" />
+		<input type="hidden" name="rt_slideshow_image_ids" id="rt_slideshow_image_ids" value="<?php echo esc_attr( implode( ',', $image_ids ) ); ?>" />
 
 		<input type="button" id="rt_slideshow_add_image_button" class="button button-secondary" value="Add Image">
 

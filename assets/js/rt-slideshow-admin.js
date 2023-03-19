@@ -70,61 +70,59 @@ $(document).ready(function () {
 
     });
 
-});
+    // Remove image event.
+    $('#rt_slideshow_image_list').on('click', '.rt-slideshow-remove', function (e) {
 
+        e.preventDefault();
 
+        var button = $(this); // .rt-slideshow-remove
+        var container = button.parent().parent(); // #rt_slideshow_image_list
+        var elementIndex = container.children('li').index(button.parent()); // index of li element
+        var hiddenField = container.next(); // #rt_slideshow_image_ids
+        var hiddenFieldValue = $.map(hiddenField.val().split(","), function (val) {
 
-// Remove image event.
-$('#rt_slideshow_image_list').on('click', '.rt-slideshow-remove', function (e) {
+            return parseInt(val);
 
-    e.preventDefault();
+        });
 
-    var button = $(this); // .rt-slideshow-remove
-    var container = button.parent().parent(); // #rt_slideshow_image_list
-    var elementIndex = container.children('li').index(button.parent()); // index of li element
-    var hiddenField = container.next(); // #rt_slideshow_image_ids
-    var hiddenFieldValue = $.map(hiddenField.val().split(","), function (val) {
+        button.parent().remove();
 
-        return parseInt(val);
+        // Remove certain array element.
+        if (elementIndex != -1) {
+
+            hiddenFieldValue.splice(elementIndex, 1);
+
+        }
+
+        // Add the IDs to the hidden field value.
+        hiddenField.val(hiddenFieldValue.join());
+
+        // Refresh sortable
+        container.sortable('refresh');
 
     });
 
-    button.parent().remove();
 
-    // Remove certain array element.
-    if (elementIndex != -1) {
+    // Reordering the images with drag and drop
+    $('#rt_slideshow_image_list').sortable({
+        items: 'li',
+        cursor: '-webkit-grabbing', // mouse cursor
+        scrollSensitivity: 40,
+        stop: function (event, ui) {
 
-        hiddenFieldValue.splice(elementIndex, 1);
+            ui.item.removeAttr('style');
 
-    }
+            var sort = []; // array of image IDs
+            var container = $(this); // #rt_slideshow_image_list
 
-    // Add the IDs to the hidden field value.
-    hiddenField.val(hiddenFieldValue.join());
+            // each time after dragging we resort our array
+            container.find('li').each(function (index) {
+                sort.push($(this).attr('data-id'));
+            });
+            // add the array value to the hidden input field
+            container.next().val(sort.join());
 
-    // Refresh sortable
-    container.sortable('refresh');
+        }
+    });
 
-});
-
-
-// Reordering the images with drag and drop
-$('#rt_slideshow_image_list').sortable({
-    items: 'li',
-    cursor: '-webkit-grabbing', // mouse cursor
-    scrollSensitivity: 40,
-    stop: function (event, ui) {
-
-        ui.item.removeAttr('style');
-
-        var sort = []; // array of image IDs
-        var container = $(this); // #rt_slideshow_image_list
-
-        // each time after dragging we resort our array
-        container.find('li').each(function (index) {
-            sort.push($(this).attr('data-id'));
-        });
-        // add the array value to the hidden input field
-        container.next().val(sort.join());
-
-    }
 });

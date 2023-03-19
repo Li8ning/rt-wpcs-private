@@ -214,10 +214,8 @@ class RTSlideshow {
 			return;
 
 		}
-
 		// Render the main page.
-		require_once plugin_dir_path( __FILE__ ) . '../templates/rtslideshow-admin.php';
-
+		require plugin_dir_path( __FILE__ ) . '../templates/rtslideshow-admin.php';
 	}
 
 	/**

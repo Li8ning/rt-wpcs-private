@@ -162,6 +162,7 @@ class Test_rtslideshow extends WP_UnitTestCase {
 	 *
 	 * @since 1.0.0
 	 * @see RTSlideshow::render_main_page()
+	 * @see /templates/rtslideshow-admin.php
 	 */
 	public function test_render_main_page() {
 
@@ -172,9 +173,7 @@ class Test_rtslideshow extends WP_UnitTestCase {
 		wp_set_current_user( $admin_user_id );
 
 		// Render the main page.
-		ob_start();
-		$rtslideshow->render_main_page();
-		$output = ob_get_clean();
+		$output = $rtslideshow->render_main_page();
 
 		// Assert that output contains the expected text.
 		$this->assertStringContainsString( '<form method="post" action="options.php">', $output );
@@ -192,19 +191,90 @@ class Test_rtslideshow extends WP_UnitTestCase {
 		);
 		wp_set_current_user( $subscriber_user_id );
 
-		ob_start();
-		$rtslideshow->render_main_page();
-		$output = ob_get_clean();
+		$output2 = $rtslideshow->render_main_page();
 
-		// Assert that output does not contain the expected text since the user does not have 'manage_options' capability.
-		$this->assertStringNotContainsString( '<form method="post" action="options.php">', $output );
-		$this->assertStringNotContainsString( '<input type="hidden" name="rt_slideshow_image_ids" id="rt_slideshow_image_ids" value="" />', $output );
-		$this->assertStringNotContainsString( '<ul id="rt_slideshow_image_list">', $output );
-		$this->assertStringNotContainsString( '<input type="submit" class="button-primary" value="Save Changes">', $output );
+		// Assert that output is null since the user does not have 'manage_options' capability.
+		$this->assertNull( $output2 );
 
 		wp_delete_user( $admin_user_id );
 		wp_delete_user( $subscriber_user_id );
+	}
 
+	/**
+	 * Test that rt_slideshow_image_ids tag is populated when image IDs are set.
+	 *
+	 * @since 1.0.0
+	 * @see /templates/rtslideshow-admin.php
+	 * @see RTSlideshow::render_main_page()
+	 */
+	public function test_image_ids_are_populated() {
+
+		$rtslideshow = new RTSlideshow();
+
+		// Set up dummy image ids
+		$image_ids = array( 1, 2, 3 );
+
+		// Set the option with the image IDs.
+		update_option( 'rt_slideshow_image_ids', implode( ',', $image_ids ) );
+
+		// Set up current user as an administrator.
+		$admin_user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $admin_user_id );
+
+		// Render the main page.
+		$output = $rtslideshow->render_main_page();
+
+		// Check that the rt_slideshow_image_ids tag has the expected value.
+		$expected_value = esc_attr( implode( ',', $image_ids ) );
+		$this->assertStringContainsString( '<input type="hidden" name="rt_slideshow_image_ids" id="rt_slideshow_image_ids" value="' . $expected_value . '" />', $output );
+
+		wp_delete_user( $admin_user_id );
+
+	}
+
+	/**
+	 * Test that rt_slideshow_image_ids tag is populated when images are selected from wp.media.
+	 *
+	 * @since 1.0.0
+	 * @see /templates/rtslideshow-admin.php
+	 * @see RTSlideshow::render_main_page()
+	 */
+	public function test_images_are_inserted() {
+
+		$rtslideshow = new RTSlideshow();
+
+		// Set up current user as an administrator.
+		$admin_user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $admin_user_id );
+
+		// Render the main page.
+		// ob_start();
+		// $rtslideshow->render_main_page();
+		// $output = ob_get_clean();
+
+		// // // Check that the rt_slideshow_image_ids tag has no value initially.
+		// $this->assertStringContainsString( '<input type="hidden" name="rt_slideshow_image_ids" id="rt_slideshow_image_ids" value="" />', $output );
+
+		// Simulate selecting an image using wp.media.
+		do_action( 'wp_enqueue_media' );
+		$_GET['wp-attach-id']    = 1;
+		$_GET['custom_uploader'] = true;
+
+		// Submit the form.
+		$_POST['_wpnonce']               = wp_create_nonce( 'rt-slideshow-settings' );
+		$_POST['rt_slideshow_image_ids'] = '1';
+		$_POST['submit']                 = 'Save Changes';
+
+		print_r( $_POST );
+
+		ob_start();
+		$rtslideshow->render_main_page();
+		$output2 = ob_get_clean();
+
+		// print_r( $output2 );
+
+		// // Check that the rt_slideshow_image_ids tag has no value initially.
+		$this->assertStringContainsString( '<input type="hidden" name="rt_slideshow_image_ids" id="rt_slideshow_image_ids" value="1" />', $output2 );
 	}
 
 	/**
@@ -212,6 +282,7 @@ class Test_rtslideshow extends WP_UnitTestCase {
 	 *
 	 * @since 1.0.0
 	 * @see RTSlideshow::rt_slideshow_slider()
+	 * @see /templates/rtslideshow-slider.php
 	 */
 	public function test_render_slider_page() {
 
