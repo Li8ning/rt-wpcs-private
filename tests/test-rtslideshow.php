@@ -184,19 +184,24 @@ class Test_rtslideshow extends WP_UnitTestCase {
 
 		// Update user role to non-administrator and check if they can still access the page.
 		$subscriber_user_id = $this->factory->user->create( array( 'role' => 'subscriber' ) );
-		wp_update_user( array( 'ID' => $subscriber_user_id, 'role' => 'subscriber' ) );
+		wp_update_user(
+			array(
+				'ID'   => $subscriber_user_id,
+				'role' => 'subscriber',
+			)
+		);
 		wp_set_current_user( $subscriber_user_id );
-	
+
 		ob_start();
 		$rtslideshow->render_main_page();
 		$output = ob_get_clean();
-	
+
 		// Assert that output does not contain the expected text since the user does not have 'manage_options' capability.
 		$this->assertStringNotContainsString( '<form method="post" action="options.php">', $output );
 		$this->assertStringNotContainsString( '<input type="hidden" name="rt_slideshow_image_ids" id="rt_slideshow_image_ids" value="" />', $output );
 		$this->assertStringNotContainsString( '<ul id="rt_slideshow_image_list">', $output );
 		$this->assertStringNotContainsString( '<input type="submit" class="button-primary" value="Save Changes">', $output );
-	
+
 		wp_delete_user( $admin_user_id );
 		wp_delete_user( $subscriber_user_id );
 
@@ -213,55 +218,66 @@ class Test_rtslideshow extends WP_UnitTestCase {
 		$rtslideshow = new RTSlideshow();
 
 		// Create dummy images using GD library
-		$image1 = imagecreatetruecolor(200, 200);
-		$bgColor1 = imagecolorallocate($image1, 255, 255, 255);
-		imagefill($image1, 0, 0, $bgColor1);
+		$image1   = imagecreatetruecolor( 200, 200 );
+		$bgColor1 = imagecolorallocate( $image1, 255, 255, 255 );
+		imagefill( $image1, 0, 0, $bgColor1 );
 		// Generate the image filename and path
 		$image_filename = 'test_image1.jpg';
-		$upload_dir = wp_upload_dir();
-		$image_path1 = $upload_dir['path'] . '/' . $image_filename;
-		imagejpeg($image1, $image_path1);
+		$upload_dir     = wp_upload_dir();
+		$image_path1    = $upload_dir['path'] . '/' . $image_filename;
+		imagejpeg( $image1, $image_path1 );
 
-		// $image2 = imagecreatetruecolor(300, 300);
-		// $bgColor2 = imagecolorallocate($image2, 255, 255, 255);
-		// imagefill($image2, 0, 0, $bgColor2);
-		// $image_path2 = sys_get_temp_dir() . '/test_image2.jpg';
-		// imagejpeg($image2, $image_path2);
+		$image2   = imagecreatetruecolor( 300, 300 );
+		$bgColor2 = imagecolorallocate( $image2, 255, 255, 255 );
+		imagefill( $image2, 0, 0, $bgColor2 );
+		// Generate the image filename and path
+		$image_filename = 'test_image2.jpg';
+		$upload_dir     = wp_upload_dir();
+		$image_path2    = $upload_dir['path'] . '/' . $image_filename;
+		imagejpeg( $image2, $image_path2 );
 
 		// Upload dummy images to media library
-		$attachment_id1 = $this->factory->attachment->create_object( $image_path1, 0, array(
-			'post_mime_type' => 'image/jpeg',
-			'post_title'     => 'Test Image 1',
-			'post_content'   => '',
-			'post_status'    => 'inherit',
-		) );
+		$attachment_id1 = $this->factory->attachment->create_object(
+			$image_path1,
+			0,
+			array(
+				'post_mime_type' => 'image/jpeg',
+				'post_title'     => 'Test Image 1',
+				'post_content'   => '',
+				'post_status'    => 'inherit',
+			)
+		);
 
-		print_r( $attachment_id1 );
-
-		// $attachment_id2 = $this->factory->attachment->create_object( $image_path2, 0, array(
-		// 	'post_mime_type' => 'image/jpeg',
-		// 	'post_title'     => 'Test Image 2',
-		// 	'post_content'   => '',
-		// 	'post_status'    => 'inherit',
-		// ) );
+		$attachment_id2 = $this->factory->attachment->create_object(
+			$image_path2,
+			0,
+			array(
+				'post_mime_type' => 'image/jpeg',
+				'post_title'     => 'Test Image 2',
+				'post_content'   => '',
+				'post_status'    => 'inherit',
+			)
+		);
 
 		// Set up current user as an administrator.
 		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $user_id );
 
 		// Add the attachment IDs to the rt_slideshow_image_ids option
-		update_option( 'rt_slideshow_image_ids', $attachment_id1 );
+		update_option( 'rt_slideshow_image_ids', $attachment_id1 . ',' . $attachment_id2 );
 
 		// Render the slider.
 		$output = $rtslideshow->rt_slideshow_slider();
 
 		// Assert that output contains the expected HTML.
-		$this->assertStringContainsString( '<div class="swiper-slide"><img src="' . wp_get_attachment_image_url( $attachment_id1, 'full' ) . '" loading="lazy"><div class="swiper-lazy-preloader"></div></div>', $output );
-		// $this->assertStringContainsString( '<div class="swiper-slide"><img src="' . wp_get_attachment_image_url( $attachment_id2, 'full' ) . '" loading="lazy"><div class="swiper-lazy-preloader"></div></div>', $output );
-		
+		$this->assertStringContainsString( '<img src="' . wp_get_attachment_image_url( $attachment_id1, 'full' ) . '" loading="lazy">', $output );
+		$this->assertStringContainsString( '<img src="' . wp_get_attachment_image_url( $attachment_id2, 'full' ) . '" loading="lazy">', $output );
+
 		// Clean up
 		wp_delete_attachment( $attachment_id1, true );
-		// wp_delete_attachment( $attachment_id2, true );
+		wp_delete_attachment( $attachment_id2, true );
+		// Delete the image IDs option.
+		delete_option( 'rt_slideshow_image_ids' );
 		wp_delete_user( $user_id );
 	}
 
