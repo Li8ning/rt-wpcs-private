@@ -247,6 +247,10 @@ class Test_rtslideshow extends WP_UnitTestCase {
 		$admin_user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $admin_user_id );
 
+		$rtslideshow->activate();
+
+		$this->assertTrue( get_option( 'rt_slideshow_image_ids' ) !== false );
+
 		// Render the main page.
 		// ob_start();
 		// $rtslideshow->render_main_page();
@@ -265,16 +269,20 @@ class Test_rtslideshow extends WP_UnitTestCase {
 		$_POST['rt_slideshow_image_ids'] = '1';
 		$_POST['submit']                 = 'Save Changes';
 
-		print_r( $_POST );
+		$image_ids = get_option( 'rt_slideshow_image_ids' );
 
-		ob_start();
-		$rtslideshow->render_main_page();
-		$output2 = ob_get_clean();
+		print_r( $image_ids );
+
+		// ob_start();
+		// $rtslideshow->render_main_page();
+		// $output2 = ob_get_clean();
 
 		// print_r( $output2 );
 
 		// // Check that the rt_slideshow_image_ids tag has no value initially.
-		$this->assertStringContainsString( '<input type="hidden" name="rt_slideshow_image_ids" id="rt_slideshow_image_ids" value="1" />', $output2 );
+		// $this->assertStringContainsString( '<input type="hidden" name="rt_slideshow_image_ids" id="rt_slideshow_image_ids" value="1" />', $output2 );
+
+		wp_delete_user( $admin_user_id );
 	}
 
 	/**

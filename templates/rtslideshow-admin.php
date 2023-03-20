@@ -5,6 +5,7 @@
  * @package RTSlideshow
  */
 
+ print_r( $_FILES );
 ?>
 
 <div class="wrap">
