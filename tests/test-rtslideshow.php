@@ -247,44 +247,25 @@ class Test_rtslideshow extends WP_UnitTestCase {
 		$image_ids     = '1,2,3';
 		$new_image_ids = '4,5,6';
 
+		update_option( 'rt_slideshow_image_ids', $image_ids );
+
 		// Set up current user as an administrator.
 		$admin_user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $admin_user_id );
 
-		$rtslideshow->activate();
+		add_menu_page( 'RT Slideshow', 'RT Slideshow', 'manage_options', 'rt-slideshow', array( $rtslideshow, 'render_main_page' ), 'dashicons-images-alt2' );
 
-		update_option( 'rt_slideshow_image_ids', $image_ids );
+		ob_start();
+		do_action( 'admin_menu' );
+		do_action( 'toplevel_page_rt-slideshow' );
+		$output = ob_get_clean();
 
-		// $rtslideshow->render_main_page();
-		$this->go_to( 'wp-admin/admin.php?page=rt-slideshow' );
+		// Check if the render_main_page function is called
+		$this->assertTrue( did_action( 'render_main_page' ) );
 
-		print_r( $this->get_last_rendered_dom()->getElementById( 'rt-slideshow-admin-form' ) );
+		// var_dump( $response );
 
-		// Submit the form.
-		// $this->submit_form('#rt-slideshow-admin-form', array( 
-		// 	'rt_slideshow_image_ids' => $new_image_ids,
-		// ) );
-
-		// Check if the 'rt_slideshow_image_ids' option is updated in the database.
-        // $this->assertEquals( $new_image_ids, get_option( 'rt_slideshow_image_ids' ) );
-
-		delete_option( 'rt_slideshow_image_ids' );
 		wp_delete_user( $admin_user_id );
-	}
-
-	/**
-     * Get the DOM for the last rendered page.
-     *
-     * @return DOMDocument
-     */
-    protected function get_last_rendered_dom() {
-        $dom = new \DOMDocument();
-        @$dom->loadHTML( $this->_last_rendered );
-        return $dom;
-    }
-
-	private function get_ob_content() {
-		return ob_get_clean() ?: '';
 	}
 
 	/**
