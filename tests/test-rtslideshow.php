@@ -222,7 +222,9 @@ class Test_rtslideshow extends WP_UnitTestCase {
 		wp_set_current_user( $admin_user_id );
 
 		// Render the main page.
-		$output = $rtslideshow->render_main_page();
+		ob_start();
+		$rtslideshow->render_main_page();
+		$output = ob_get_clean();
 
 		// Check that the rt_slideshow_image_ids tag has the expected value.
 		$expected_value = esc_attr( implode( ',', $image_ids ) );
@@ -239,9 +241,11 @@ class Test_rtslideshow extends WP_UnitTestCase {
 	 * @see /templates/rtslideshow-admin.php
 	 * @see RTSlideshow::render_main_page()
 	 */
-	public function test_images_are_inserted() {
+	public function test_image_ids_are_inserted_in_db_correctly() {
 
-		$rtslideshow = new RTSlideshow();
+		$rtslideshow   = new RTSlideshow();
+		$image_ids     = '1,2,3';
+		$new_image_ids = '4,5,6';
 
 		// Set up current user as an administrator.
 		$admin_user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
@@ -249,40 +253,38 @@ class Test_rtslideshow extends WP_UnitTestCase {
 
 		$rtslideshow->activate();
 
-		$this->assertTrue( get_option( 'rt_slideshow_image_ids' ) !== false );
+		update_option( 'rt_slideshow_image_ids', $image_ids );
 
-		// Render the main page.
-		// ob_start();
 		// $rtslideshow->render_main_page();
-		// $output = ob_get_clean();
+		$this->go_to( 'wp-admin/admin.php?page=rt-slideshow' );
 
-		// // // Check that the rt_slideshow_image_ids tag has no value initially.
-		// $this->assertStringContainsString( '<input type="hidden" name="rt_slideshow_image_ids" id="rt_slideshow_image_ids" value="" />', $output );
-
-		// Simulate selecting an image using wp.media.
-		do_action( 'wp_enqueue_media' );
-		$_GET['wp-attach-id']    = 1;
-		$_GET['custom_uploader'] = true;
+		print_r( $this->get_last_rendered_dom()->getElementById( 'rt-slideshow-admin-form' ) );
 
 		// Submit the form.
-		$_POST['_wpnonce']               = wp_create_nonce( 'rt-slideshow-settings' );
-		$_POST['rt_slideshow_image_ids'] = '1';
-		$_POST['submit']                 = 'Save Changes';
+		// $this->submit_form('#rt-slideshow-admin-form', array( 
+		// 	'rt_slideshow_image_ids' => $new_image_ids,
+		// ) );
 
-		$image_ids = get_option( 'rt_slideshow_image_ids' );
+		// Check if the 'rt_slideshow_image_ids' option is updated in the database.
+        // $this->assertEquals( $new_image_ids, get_option( 'rt_slideshow_image_ids' ) );
 
-		print_r( $image_ids );
-
-		// ob_start();
-		// $rtslideshow->render_main_page();
-		// $output2 = ob_get_clean();
-
-		// print_r( $output2 );
-
-		// // Check that the rt_slideshow_image_ids tag has no value initially.
-		// $this->assertStringContainsString( '<input type="hidden" name="rt_slideshow_image_ids" id="rt_slideshow_image_ids" value="1" />', $output2 );
-
+		delete_option( 'rt_slideshow_image_ids' );
 		wp_delete_user( $admin_user_id );
+	}
+
+	/**
+     * Get the DOM for the last rendered page.
+     *
+     * @return DOMDocument
+     */
+    protected function get_last_rendered_dom() {
+        $dom = new \DOMDocument();
+        @$dom->loadHTML( $this->_last_rendered );
+        return $dom;
+    }
+
+	private function get_ob_content() {
+		return ob_get_clean() ?: '';
 	}
 
 	/**

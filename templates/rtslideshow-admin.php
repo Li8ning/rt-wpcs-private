@@ -12,7 +12,7 @@
 
 	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 
-	<form method="post" action="options.php">
+	<form method="post" action="options.php" id="rt-slideshow-admin-form">
 
 		<?php
 
