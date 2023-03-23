@@ -10,6 +10,73 @@
 class Test_rtslideshow extends WP_UnitTestCase {
 
 	/**
+	 * Test that the RTSlideshow class can be instantiated.
+	 *
+	 * @covers \RTSlideshow\RTSlideshow
+	 */
+	public function test_RTSlideshow_class_exists() {
+		$this->assertTrue( class_exists( '\RTSlideshow\RTSlideshow' ) );
+	}
+
+	/**
+	 * Test that the RTSlideshow class is properly defined as part of the RTSlideshow namespace.
+	 *
+	 * @covers \RTSlideshow\RTSlideshow
+	 */
+	public function test_RTSlideshow_class_is_in_correct_namespace() {
+		$reflection = new \ReflectionClass( '\RTSlideshow\RTSlideshow' );
+		$this->assertEquals( 'RTSlideshow', $reflection->getNamespaceName() );
+	}
+
+	/**
+	 * Test that the plugin works correctly with different versions of WordPress.
+	 *
+	 * @dataProvider pluginCompatibilityProvider
+	 */
+	public function testPluginCompatibility( $wp_version ) {
+		// Set up WordPress environment
+		define( 'WP_USE_THEMES', false );
+		global $wp, $wp_query, $wp_the_query, $wp_rewrite, $wp_did_header;
+		require_once ABSPATH . 'wp-load.php';
+
+		// Set the WordPress version
+		$GLOBALS['wp_version'] = $wp_version;
+
+		// Instantiate the plugin
+		$rt_slideshow = new RTSlideshow();
+
+		// Check that the plugin is loaded
+		$this->assertTrue( class_exists( '\RTSlideshow\RTSlideshow' ) );
+
+		// Check that the plugin is compatible with the specified version of WordPress
+		$this->assertTrue( $rt_slideshow->is_compatible_with_wordpress_version() );
+
+		// Deactivate the plugin
+		$rt_slideshow->deactivate();
+
+		// Clean up the WordPress environment
+		unset( $rt_slideshow );
+		wp_cache_flush();
+		$GLOBALS['wp'] = null;
+	}
+
+	/**
+	 * Data provider for testPluginCompatibility().
+	 * Returns an array of WordPress versions to test.
+	 *
+	 * @return array
+	 */
+	public function pluginCompatibilityProvider() {
+		 return array(
+			 array( '4.7.0' ),
+			 array( '5.0.0' ),
+			 array( '5.5.0' ),
+			 array( '5.8.0' ),
+		 );
+	}
+
+
+	/**
 	 * Tests whether required admin styles and scripts
 	 * are enqueued and dequeued
 	 *
