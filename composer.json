@@ -1,5 +1,5 @@
 {
-    "name": "speed/rt-slideshow",
+    "name": "speed/wp-slideshow",
     "description": "Creates a beautiful slideshow",
 	"license": "GPL-3.0+",
 	"version": "1.0.0",
@@ -29,7 +29,7 @@
     ],
 	"autoload": {
 		"psr-4": {
-			"RTSlideshow\\": "src/"
+			"WPSlideshow\\": "src/"
 		}
 	},
 	"scripts": {

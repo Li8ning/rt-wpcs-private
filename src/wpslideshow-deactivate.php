@@ -8,10 +8,10 @@
  *
  * @link              https://github.com/rtlearn/wpcs-Li8ning
  * @since             1.0.0
- * @package           RTSlideshow
+ * @package           WPSlideshow
  *
  * @wordpress-plugin
- * Plugin Name:       RT Slideshow
+ * Plugin Name:       WP Slideshow
  * Plugin URI:        https://github.com/rtlearn/wpcs-Li8ning
  * Description:       Creates a beautiful slideshow.
  * Version:           1.0.0
@@ -26,19 +26,19 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-require_once plugin_dir_path( __FILE__ ) . 'class-rtslideshow.php';
+require_once plugin_dir_path( __FILE__ ) . 'class-wpslideshow.php';
 
-// Create an instance of the RTSlideshow class.
-$rt_slideshow = new RTSlideshow\RTSlideshow();
+// Create an instance of the WPSlideshow class.
+$wp_slideshow = new WPSlideshow\WPSlideshow();
 
 // Dequeue admin styles and scripts
-$rt_slideshow->dequeue_admin_scripts();
+$wp_slideshow->dequeue_admin_scripts();
 
 // Dequeue front end styles and scripts
-$rt_slideshow->dequeue_front_end_scripts();
+$wp_slideshow->dequeue_front_end_scripts();
 
 // Unregister settings
-unregister_setting( 'rt-slideshow-settings-group', 'rt_slideshow_image_ids' );
+unregister_setting( 'wp-slideshow-settings-group', 'wp_slideshow_image_ids' );
 
 // Remove the slideshow shortcode.
-remove_shortcode( 'rtslideshow' );
+remove_shortcode( 'wpslideshow' );

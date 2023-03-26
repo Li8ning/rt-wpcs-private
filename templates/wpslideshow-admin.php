@@ -2,7 +2,7 @@
 /**
  * The main plugin page file.
  *
- * @package RTSlideshow
+ * @package WPSlideshow
  */
 
  print_r( $_FILES );
@@ -12,27 +12,27 @@
 
 	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 
-	<form method="post" action="options.php" id="rt-slideshow-admin-form">
+	<form method="post" action="options.php" id="wp-slideshow-admin-form">
 
 		<?php
 
 		// Output security fields.
-		settings_fields( 'rt-slideshow-settings-group' );
+		settings_fields( 'wp-slideshow-settings-group' );
 
 		// Output setting sections.
-		do_settings_sections( 'rt-slideshow-settings-group' );
+		do_settings_sections( 'wp-slideshow-settings-group' );
 
 		?>
 
-		<ul id="rt_slideshow_image_list">
+		<ul id="wp_slideshow_image_list">
 
 		<?php
 
 		// Get the saved image IDs.
-		$get_image_ids = get_option( 'rt_slideshow_image_ids', array() );
+		$get_image_ids = get_option( 'wp_slideshow_image_ids', array() );
 		$image_ids     = array();
 		if ( ! empty( $get_image_ids ) ) {
-			$image_ids = explode( ',', get_option( 'rt_slideshow_image_ids', array() ) );
+			$image_ids = explode( ',', get_option( 'wp_slideshow_image_ids', array() ) );
 
 			// Loop through each saved image ID and display them.
 			foreach ( $image_ids as $image_id ) {
@@ -47,7 +47,7 @@
 
 						<span style="background-image:url('<?php echo esc_url( $image_url ); ?>')"></span>
 
-						<a href="#" class="rt-slideshow-remove">&times;</a>
+						<a href="#" class="wp-slideshow-remove">&times;</a>
 
 					</li>
 
@@ -60,9 +60,9 @@
 
 		</ul>
 
-		<input type="hidden" name="rt_slideshow_image_ids" id="rt_slideshow_image_ids" value="<?php echo esc_attr( implode( ',', $image_ids ) ); ?>" />
+		<input type="hidden" name="wp_slideshow_image_ids" id="wp_slideshow_image_ids" value="<?php echo esc_attr( implode( ',', $image_ids ) ); ?>" />
 
-		<input type="button" id="rt_slideshow_add_image_button" class="button button-secondary" value="Add Image">
+		<input type="button" id="wp_slideshow_add_image_button" class="button button-secondary" value="Add Image">
 
 		<input type="submit" class="button-primary" value="<?php esc_attr_e( 'Save Changes' ); ?>">
 

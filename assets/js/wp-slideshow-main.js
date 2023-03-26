@@ -1,4 +1,4 @@
-var swiper = new Swiper('#rt-swiper-slider.swiper', {
+var swiper = new Swiper('#wp-swiper-slider.swiper', {
   // Optional parameters
   direction: 'horizontal',
   loop: true,
@@ -12,7 +12,7 @@ var swiper = new Swiper('#rt-swiper-slider.swiper', {
   centeredSlides: true,
 
   // Modify default container swiper class
-  containerModifierClass: 'rt-swiper-',
+  containerModifierClass: 'wp-swiper-',
 
   // Navigation arrows
   navigation: {

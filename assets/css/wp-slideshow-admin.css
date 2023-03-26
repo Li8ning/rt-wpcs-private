@@ -1,4 +1,4 @@
-#rt_slideshow_image_list {
+#wp_slideshow_image_list {
 
     display: flex;
     flex-direction: row;
@@ -7,7 +7,7 @@
 
 }
 
-#rt_slideshow_image_list li span {
+#wp_slideshow_image_list li span {
 
     height: 120px;
     width: 120px;
@@ -20,7 +20,7 @@
 
 }
 
-#rt_slideshow_image_list li a {
+#wp_slideshow_image_list li a {
 
     text-decoration: none;
     border-radius: 100%;

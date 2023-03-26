@@ -2,10 +2,10 @@
 /**
  * The main plugin class file.
  *
- * @package RTSlideshow
+ * @package WPSlideshow
  */
 
-namespace RTSlideshow;
+namespace WPSlideshow;
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Main plugin class.
  */
-class RTSlideshow {
+class WPSlideshow {
 
 	/**
 	 * The unique identifier of this plugin.
@@ -41,7 +41,7 @@ class RTSlideshow {
 	 */
 	public function __construct() {
 
-		$this->plugin_name = 'rt-slideshow';
+		$this->plugin_name = 'wp-slideshow';
 		$this->version     = '1.0.0';
 
 		// Load plugin scripts and styles.
@@ -50,7 +50,7 @@ class RTSlideshow {
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 
 		// Add shortcode to display slideshow.
-		add_shortcode( 'rtslideshow', array( $this, 'rt_slideshow_slider' ) );
+		add_shortcode( 'wpslideshow', array( $this, 'wp_slideshow_slider' ) );
 
 		if ( is_admin() ) {
 
@@ -76,10 +76,10 @@ class RTSlideshow {
 		}
 
 		// Enqueue plugin admin scripts.
-		wp_enqueue_script( 'rt-slideshow-admin-script', plugins_url( 'assets/js/rt-slideshow-admin.js', dirname( __FILE__ ) ), array(), '1.0.0', true );
+		wp_enqueue_script( 'wp-slideshow-admin-script', plugins_url( 'assets/js/wp-slideshow-admin.js', dirname( __FILE__ ) ), array(), '1.0.0', true );
 
 		// Enqueue plugin admin stylesheets.
-		wp_enqueue_style( 'rt-slideshow-admin-styles', plugins_url( 'assets/css/rt-slideshow-admin.css', dirname( __FILE__ ) ), array(), '1.0.0' );
+		wp_enqueue_style( 'wp-slideshow-admin-styles', plugins_url( 'assets/css/wp-slideshow-admin.css', dirname( __FILE__ ) ), array(), '1.0.0' );
 
 	}
 
@@ -91,14 +91,14 @@ class RTSlideshow {
 	public function enqueue_front_end_scripts() {
 
 		// Enqueue jQuery UI stylesheets and scripts.
-		wp_enqueue_style( 'rt-swiper-css', plugins_url( 'lib/swiper-9.1.0/swiper-bundle.min.css', dirname( __FILE__ ) ), array(), '9.1.0' );
-		wp_enqueue_script( 'rt-swiper-js', plugins_url( 'lib/swiper-9.1.0/swiper-bundle.min.js', dirname( __FILE__ ) ), array(), '9.1.0', true );
+		wp_enqueue_style( 'wp-swiper-css', plugins_url( 'lib/swiper-9.1.0/swiper-bundle.min.css', dirname( __FILE__ ) ), array(), '9.1.0' );
+		wp_enqueue_script( 'wp-swiper-js', plugins_url( 'lib/swiper-9.1.0/swiper-bundle.min.js', dirname( __FILE__ ) ), array(), '9.1.0', true );
 
 		// Enqueue plugin main scripts.
-		wp_enqueue_script( 'rt-slideshow-main-script', plugins_url( 'assets/js/rt-slideshow-main.js', dirname( __FILE__ ) ), array(), '1.0.0', true );
+		wp_enqueue_script( 'wp-slideshow-main-script', plugins_url( 'assets/js/wp-slideshow-main.js', dirname( __FILE__ ) ), array(), '1.0.0', true );
 
 		// Enqueue plugin main stylesheets.
-		wp_enqueue_style( 'rt-slideshow-main-styles', plugins_url( 'assets/css/rt-slideshow-main.css', dirname( __FILE__ ) ), array(), '1.0.0' );
+		wp_enqueue_style( 'wp-slideshow-main-styles', plugins_url( 'assets/css/wp-slideshow-main.css', dirname( __FILE__ ) ), array(), '1.0.0' );
 
 	}
 
@@ -111,10 +111,10 @@ class RTSlideshow {
 
 		// Remove admin styles and scripts.
 		// Dequeue plugin admin scripts.
-		wp_dequeue_script( 'rt-slideshow-admin-script' );
+		wp_dequeue_script( 'wp-slideshow-admin-script' );
 
 		// Dequeue plugin admin stylesheets.
-		wp_dequeue_style( 'rt-slideshow-admin-styles' );
+		wp_dequeue_style( 'wp-slideshow-admin-styles' );
 
 	}
 
@@ -127,14 +127,14 @@ class RTSlideshow {
 
 		// Remove front end styles and scripts.
 		// Dequeue jQuery UI stylesheets and scripts.
-		wp_dequeue_style( 'rt-swiper-css' );
-		wp_dequeue_script( 'rt-swiper-js' );
+		wp_dequeue_style( 'wp-swiper-css' );
+		wp_dequeue_script( 'wp-swiper-js' );
 
 		// Dequeue plugin main scripts.
-		wp_dequeue_script( 'rt-slideshow-main-script' );
+		wp_dequeue_script( 'wp-slideshow-main-script' );
 
 		// Dequeue plugin main stylesheets.
-		wp_dequeue_style( 'rt-slideshow-main-styles' );
+		wp_dequeue_style( 'wp-slideshow-main-styles' );
 
 	}
 
@@ -145,7 +145,7 @@ class RTSlideshow {
 	 */
 	public function add_admin_menu() {
 
-		add_menu_page( 'RT Slideshow', 'RT Slideshow', 'manage_options', 'rt-slideshow', array( $this, 'render_main_page' ), 'dashicons-images-alt2' );
+		add_menu_page( 'WP Slideshow', 'WP Slideshow', 'manage_options', 'wp-slideshow', array( $this, 'render_main_page' ), 'dashicons-images-alt2' );
 
 	}
 
@@ -160,7 +160,7 @@ class RTSlideshow {
 	public function activate() {
 
 		// Store image ids in database.
-		add_option( 'rt_slideshow_image_ids', array() );
+		add_option( 'wp_slideshow_image_ids', array() );
 
 		// Flush rewrite rules to ensure custom post types are registered.
 		flush_rewrite_rules();
@@ -177,7 +177,7 @@ class RTSlideshow {
 	 */
 	public function deactivate() {
 
-		include_once dirname( __FILE__ ) . '/rtslideshow-deactivate.php';
+		include_once dirname( __FILE__ ) . '/wpslideshow-deactivate.php';
 
 	}
 
@@ -188,7 +188,7 @@ class RTSlideshow {
 	 */
 	public function register_settings() {
 
-		register_setting( 'rt-slideshow-settings-group', 'rt_slideshow_image_ids' );
+		register_setting( 'wp-slideshow-settings-group', 'wp_slideshow_image_ids' );
 
 	}
 
@@ -207,7 +207,7 @@ class RTSlideshow {
 
 		}
 		// Render the main page.
-		require plugin_dir_path( __FILE__ ) . '../templates/rtslideshow-admin.php';
+		require plugin_dir_path( __FILE__ ) . '../templates/wpslideshow-admin.php';
 	}
 
 	/**
@@ -219,7 +219,7 @@ class RTSlideshow {
 
 		ob_start();
 		// Render the slider.
-		require_once plugin_dir_path( __FILE__ ) . '../templates/rtslideshow-slider.php';
+		require_once plugin_dir_path( __FILE__ ) . '../templates/wpslideshow-slider.php';
 		$content = ob_get_clean();
 		return $content;
 
