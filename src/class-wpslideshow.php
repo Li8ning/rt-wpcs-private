@@ -76,10 +76,10 @@ class WPSlideshow {
 		}
 
 		// Enqueue plugin admin scripts.
-		wp_enqueue_script( 'wp-slideshow-admin-script', plugins_url( 'assets/js/wp-slideshow-admin.js', dirname( __FILE__ ) ), array(), '1.0.0', true );
+		wp_enqueue_script( 'wpbf-slideshow-admin-script', plugins_url( 'assets/js/wp-slideshow-admin.js', dirname( __FILE__ ) ), array(), '1.0.0', true );
 
 		// Enqueue plugin admin stylesheets.
-		wp_enqueue_style( 'wp-slideshow-admin-styles', plugins_url( 'assets/css/wp-slideshow-admin.css', dirname( __FILE__ ) ), array(), '1.0.0' );
+		wp_enqueue_style( 'wpbf-slideshow-admin-styles', plugins_url( 'assets/css/wp-slideshow-admin.css', dirname( __FILE__ ) ), array(), '1.0.0' );
 
 	}
 
@@ -91,14 +91,14 @@ class WPSlideshow {
 	public function enqueue_front_end_scripts() {
 
 		// Enqueue jQuery UI stylesheets and scripts.
-		wp_enqueue_style( 'wp-swiper-css', plugins_url( 'lib/swiper-9.1.0/swiper-bundle.min.css', dirname( __FILE__ ) ), array(), '9.1.0' );
-		wp_enqueue_script( 'wp-swiper-js', plugins_url( 'lib/swiper-9.1.0/swiper-bundle.min.js', dirname( __FILE__ ) ), array(), '9.1.0', true );
+		wp_enqueue_style( 'wpbf-swiper-css', plugins_url( 'lib/swiper-9.1.0/swiper-bundle.min.css', dirname( __FILE__ ) ), array(), '9.1.0' );
+		wp_enqueue_script( 'wpbf-swiper-js', plugins_url( 'lib/swiper-9.1.0/swiper-bundle.min.js', dirname( __FILE__ ) ), array(), '9.1.0', true );
 
 		// Enqueue plugin main scripts.
-		wp_enqueue_script( 'wp-slideshow-main-script', plugins_url( 'assets/js/wp-slideshow-main.js', dirname( __FILE__ ) ), array(), '1.0.0', true );
+		wp_enqueue_script( 'wpbf-slideshow-main-script', plugins_url( 'assets/js/wp-slideshow-main.js', dirname( __FILE__ ) ), array(), '1.0.0', true );
 
 		// Enqueue plugin main stylesheets.
-		wp_enqueue_style( 'wp-slideshow-main-styles', plugins_url( 'assets/css/wp-slideshow-main.css', dirname( __FILE__ ) ), array(), '1.0.0' );
+		wp_enqueue_style( 'wpbf-slideshow-main-styles', plugins_url( 'assets/css/wp-slideshow-main.css', dirname( __FILE__ ) ), array(), '1.0.0' );
 
 	}
 
@@ -111,10 +111,10 @@ class WPSlideshow {
 
 		// Remove admin styles and scripts.
 		// Dequeue plugin admin scripts.
-		wp_dequeue_script( 'wp-slideshow-admin-script' );
+		wp_dequeue_script( 'wpbf-slideshow-admin-script' );
 
 		// Dequeue plugin admin stylesheets.
-		wp_dequeue_style( 'wp-slideshow-admin-styles' );
+		wp_dequeue_style( 'wpbf-slideshow-admin-styles' );
 
 	}
 
@@ -127,14 +127,14 @@ class WPSlideshow {
 
 		// Remove front end styles and scripts.
 		// Dequeue jQuery UI stylesheets and scripts.
-		wp_dequeue_style( 'wp-swiper-css' );
-		wp_dequeue_script( 'wp-swiper-js' );
+		wp_dequeue_style( 'wpbf-swiper-css' );
+		wp_dequeue_script( 'wpbf-swiper-js' );
 
 		// Dequeue plugin main scripts.
-		wp_dequeue_script( 'wp-slideshow-main-script' );
+		wp_dequeue_script( 'wpbf-slideshow-main-script' );
 
 		// Dequeue plugin main stylesheets.
-		wp_dequeue_style( 'wp-slideshow-main-styles' );
+		wp_dequeue_style( 'wpbf-slideshow-main-styles' );
 
 	}
 
