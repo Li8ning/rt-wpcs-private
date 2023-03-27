@@ -4,8 +4,6 @@
  *
  * @package WPSlideshow
  */
-
- print_r( $_FILES );
 ?>
 
 <div class="wrap">

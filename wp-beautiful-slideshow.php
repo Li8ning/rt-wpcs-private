@@ -1,12 +1,12 @@
 <?php
 /**
- * Plugin Name: WP Slideshow
+ * Plugin Name: WP Beautiful Slideshow
  * Plugin URI: https://github.com/rtlearn/wpcs-Li8ning
  * Description: Creates a beautiful slideshow.
  * Version: 1.0.0
  * Author: Dharmrajsinh Jadeja
  * Author URI: https://blog.avgamingindia.com
- * Text Domain: wp-slideshow
+ * Text Domain: wp-beautiful-slideshow
  * Domain Path: /languages
  *
  * @package WPSlideshow
