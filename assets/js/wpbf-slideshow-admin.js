@@ -2,16 +2,16 @@ var $ = jQuery;
 
 $(document).ready(function () {
 
-    var wp_slideshow_uploader;
+    var wpbf_slideshow_uploader;
 
-    $('#wp_slideshow_add_image_button').click(function (e) {
+    $('#wpbf_slideshow_add_image_button').click(function (e) {
 
         e.preventDefault();
 
         // If the uploader object has already been created, reopen the dialog
-        if (!wp_slideshow_uploader) {
+        if (!wpbf_slideshow_uploader) {
 
-            wp_slideshow_uploader = wp.media({
+            wpbf_slideshow_uploader = wp.media({
 
                 title: 'Select Images',
 
@@ -34,12 +34,12 @@ $(document).ready(function () {
 
 
             // When a file is selected, grab its ID and add it to the input field
-            wp_slideshow_uploader.on('select', function () {
+            wpbf_slideshow_uploader.on('select', function () {
 
                 var imageIds = [];
-                var imageIdsHiddenField = $('#wp_slideshow_image_ids').val();
+                var imageIdsHiddenField = $('#wpbf_slideshow_image_ids').val();
 
-                var selection = wp_slideshow_uploader.state().get('selection');
+                var selection = wpbf_slideshow_uploader.state().get('selection');
 
                 if (imageIdsHiddenField != '') {
                     imageIds = $.map(imageIdsHiddenField.split(","), function (val) {
@@ -55,30 +55,30 @@ $(document).ready(function () {
 
                     imageIds.push(attachment.id);
 
-                    $('#wp_slideshow_image_list').append('<li data-id="' + attachment.id + '"><span style="background-image:url(' + attachment.sizes.thumbnail.url + ')"></span><a href="#" class="wp-slideshow-remove">&times;</a></li>');
+                    $('#wpbf_slideshow_image_list').append('<li data-id="' + attachment.id + '"><span style="background-image:url(' + attachment.sizes.thumbnail.url + ')"></span><a href="#" class="wpbf-slideshow-remove">&times;</a></li>');
 
                 });
 
-                $('#wp_slideshow_image_ids').val(imageIds.join(','));
+                $('#wpbf_slideshow_image_ids').val(imageIds.join(','));
 
             });
 
         }
 
         // Open the uploader dialog
-        wp_slideshow_uploader.open();
+        wpbf_slideshow_uploader.open();
 
     });
 
     // Remove image event.
-    $('#wp_slideshow_image_list').on('click', '.wp-slideshow-remove', function (e) {
+    $('#wpbf_slideshow_image_list').on('click', '.wpbf-slideshow-remove', function (e) {
 
         e.preventDefault();
 
-        var button = $(this); // .wp-slideshow-remove
-        var container = button.parent().parent(); // #wp_slideshow_image_list
+        var button = $(this); // .wpbf-slideshow-remove
+        var container = button.parent().parent(); // #wpbf_slideshow_image_list
         var elementIndex = container.children('li').index(button.parent()); // index of li element
-        var hiddenField = container.next(); // #wp_slideshow_image_ids
+        var hiddenField = container.next(); // #wpbf_slideshow_image_ids
         var hiddenFieldValue = $.map(hiddenField.val().split(","), function (val) {
 
             return parseInt(val);
@@ -104,7 +104,7 @@ $(document).ready(function () {
 
 
     // Reordering the images with drag and drop
-    $('#wp_slideshow_image_list').sortable({
+    $('#wpbf_slideshow_image_list').sortable({
         items: 'li',
         cursor: '-webkit-grabbing', // mouse cursor
         scrollSensitivity: 40,
@@ -113,7 +113,7 @@ $(document).ready(function () {
             ui.item.removeAttr('style');
 
             var sort = []; // array of image IDs
-            var container = $(this); // #wp_slideshow_image_list
+            var container = $(this); // #wpbf_slideshow_image_list
 
             // each time after dragging we resort our array
             container.find('li').each(function (index) {

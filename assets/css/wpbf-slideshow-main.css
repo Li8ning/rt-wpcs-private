@@ -1,11 +1,11 @@
-#wp-swiper-slider.swiper {
+#wpbf-swiper-slider.swiper {
 
     width: 600px;
     height: 300px;
 
 }
 
-#wp-swiper-slider.swiper .swiper-slide img{
+#wpbf-swiper-slider.swiper .swiper-slide img{
 
     width: 100%;
 
@@ -14,7 +14,7 @@
 /* Responsive Slider CSS */
 @media (max-width:768px) {
 
-    #wp-swiper-slider.swiper {
+    #wpbf-swiper-slider.swiper {
 
         width: 100%;
         height: auto;

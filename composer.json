@@ -29,7 +29,7 @@
     ],
 	"autoload": {
 		"psr-4": {
-			"WPSlideshow\\": "src/"
+			"WPBFSlideshow\\": "src/"
 		}
 	},
 	"scripts": {

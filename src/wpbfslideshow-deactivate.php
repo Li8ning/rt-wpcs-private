@@ -11,7 +11,7 @@
  * @package           WPSlideshow
  *
  * @wordpress-plugin
- * Plugin Name:       WP Slideshow
+ * Plugin Name:       WPBF Slideshow
  * Plugin URI:        https://github.com/rtlearn/wpcs-Li8ning
  * Description:       Creates a beautiful slideshow.
  * Version:           1.0.0
@@ -26,19 +26,19 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-require_once plugin_dir_path( __FILE__ ) . 'class-wpslideshow.php';
+require_once plugin_dir_path( __FILE__ ) . 'class-wpbfslideshow.php';
 
-// Create an instance of the WPSlideshow class.
-$wp_slideshow = new WPSlideshow\WPSlideshow();
+// Create an instance of the WPBFSlideshow class.
+$wpbf_slideshow = new WPBFSlideshow\WPBFSlideshow();
 
 // Dequeue admin styles and scripts
-$wp_slideshow->dequeue_admin_scripts();
+$wpbf_slideshow->dequeue_admin_scripts();
 
 // Dequeue front end styles and scripts
-$wp_slideshow->dequeue_front_end_scripts();
+$wpbf_slideshow->dequeue_front_end_scripts();
 
 // Unregister settings
-unregister_setting( 'wp-slideshow-settings-group', 'wp_slideshow_image_ids' );
+unregister_setting( 'wpbf-slideshow-settings-group', 'wpbf_slideshow_image_ids' );
 
 // Remove the slideshow shortcode.
-remove_shortcode( 'wpslideshow' );
+remove_shortcode( 'wpbfslideshow' );

@@ -2,10 +2,10 @@
 /**
  * The main plugin class file.
  *
- * @package WPSlideshow
+ * @package WPBFSlideshow
  */
 
-namespace WPSlideshow;
+namespace WPBFSlideshow;
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Main plugin class.
  */
-class WPSlideshow {
+class WPBFSlideshow {
 
 	/**
 	 * The unique identifier of this plugin.
@@ -41,7 +41,7 @@ class WPSlideshow {
 	 */
 	public function __construct() {
 
-		$this->plugin_name = 'wp-slideshow';
+		$this->plugin_name = 'wpbf-beautiful-slideshow';
 		$this->version     = '1.0.0';
 
 		// Load plugin scripts and styles.
@@ -50,7 +50,7 @@ class WPSlideshow {
 		add_action( 'admin_init', array( $this, 'register_settings' ) );
 
 		// Add shortcode to display slideshow.
-		add_shortcode( 'wpslideshow', array( $this, 'wp_slideshow_slider' ) );
+		add_shortcode( 'wpbfslideshow', array( $this, 'wpbf_slideshow_slider' ) );
 
 		if ( is_admin() ) {
 
@@ -76,10 +76,10 @@ class WPSlideshow {
 		}
 
 		// Enqueue plugin admin scripts.
-		wp_enqueue_script( 'wpbf-slideshow-admin-script', plugins_url( 'assets/js/wp-slideshow-admin.js', dirname( __FILE__ ) ), array(), '1.0.0', true );
+		wp_enqueue_script( 'wpbf-slideshow-admin-script', plugins_url( 'assets/js/wpbf-slideshow-admin.js', dirname( __FILE__ ) ), array(), '1.0.0', true );
 
 		// Enqueue plugin admin stylesheets.
-		wp_enqueue_style( 'wpbf-slideshow-admin-styles', plugins_url( 'assets/css/wp-slideshow-admin.css', dirname( __FILE__ ) ), array(), '1.0.0' );
+		wp_enqueue_style( 'wpbf-slideshow-admin-styles', plugins_url( 'assets/css/wpbf-slideshow-admin.css', dirname( __FILE__ ) ), array(), '1.0.0' );
 
 	}
 
@@ -95,10 +95,10 @@ class WPSlideshow {
 		wp_enqueue_script( 'wpbf-swiper-js', plugins_url( 'lib/swiper-9.1.0/swiper-bundle.min.js', dirname( __FILE__ ) ), array(), '9.1.0', true );
 
 		// Enqueue plugin main scripts.
-		wp_enqueue_script( 'wpbf-slideshow-main-script', plugins_url( 'assets/js/wp-slideshow-main.js', dirname( __FILE__ ) ), array(), '1.0.0', true );
+		wp_enqueue_script( 'wpbf-slideshow-main-script', plugins_url( 'assets/js/wpbf-slideshow-main.js', dirname( __FILE__ ) ), array(), '1.0.0', true );
 
 		// Enqueue plugin main stylesheets.
-		wp_enqueue_style( 'wpbf-slideshow-main-styles', plugins_url( 'assets/css/wp-slideshow-main.css', dirname( __FILE__ ) ), array(), '1.0.0' );
+		wp_enqueue_style( 'wpbf-slideshow-main-styles', plugins_url( 'assets/css/wpbf-slideshow-main.css', dirname( __FILE__ ) ), array(), '1.0.0' );
 
 	}
 
@@ -145,7 +145,7 @@ class WPSlideshow {
 	 */
 	public function add_admin_menu() {
 
-		add_menu_page( 'WP Slideshow', 'WP Slideshow', 'manage_options', 'wp-slideshow', array( $this, 'render_main_page' ), 'dashicons-images-alt2' );
+		add_menu_page( 'WPBF Slideshow', 'WPBF Slideshow', 'manage_options', 'wpbf-slideshow', array( $this, 'render_main_page' ), 'dashicons-images-alt2' );
 
 	}
 
@@ -160,7 +160,7 @@ class WPSlideshow {
 	public function activate() {
 
 		// Store image ids in database.
-		add_option( 'wp_slideshow_image_ids', array() );
+		add_option( 'wpbf_slideshow_image_ids', array() );
 
 		// Flush rewrite rules to ensure custom post types are registered.
 		flush_rewrite_rules();
@@ -177,7 +177,7 @@ class WPSlideshow {
 	 */
 	public function deactivate() {
 
-		include_once dirname( __FILE__ ) . '/wpslideshow-deactivate.php';
+		include_once dirname( __FILE__ ) . '/wpbfslideshow-deactivate.php';
 
 	}
 
@@ -188,7 +188,7 @@ class WPSlideshow {
 	 */
 	public function register_settings() {
 
-		register_setting( 'wp-slideshow-settings-group', 'wp_slideshow_image_ids' );
+		register_setting( 'wpbf-slideshow-settings-group', 'wpbf_slideshow_image_ids' );
 
 	}
 
@@ -207,7 +207,7 @@ class WPSlideshow {
 
 		}
 		// Render the main page.
-		require plugin_dir_path( __FILE__ ) . '../templates/wpslideshow-admin.php';
+		require plugin_dir_path( __FILE__ ) . '../templates/wpbfslideshow-admin.php';
 	}
 
 	/**
@@ -215,11 +215,11 @@ class WPSlideshow {
 	 *
 	 * @since 1.0.0
 	 */
-	public function rt_slideshow_slider() {
+	public function wpbf_slideshow_slider() {
 
 		ob_start();
 		// Render the slider.
-		require_once plugin_dir_path( __FILE__ ) . '../templates/wpslideshow-slider.php';
+		require_once plugin_dir_path( __FILE__ ) . '../templates/wpbfslideshow-slider.php';
 		$content = ob_get_clean();
 		return $content;
 

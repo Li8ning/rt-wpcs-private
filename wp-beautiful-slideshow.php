@@ -9,7 +9,7 @@
  * Text Domain: wp-beautiful-slideshow
  * Domain Path: /languages
  *
- * @package WPSlideshow
+ * @package WPBFSlideshow
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -18,10 +18,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 }
 
-require_once plugin_dir_path( __FILE__ ) . 'src/class-wpslideshow.php';
+require_once plugin_dir_path( __FILE__ ) . 'src/class-wpbfslideshow.php';
 
 // Instantiate the plugin class.
-$wp_slideshow = new WPSlideshow\WPSlideshow();
+$wpbf_slideshow = new WPBFSlideshow\WPBFSlideshow();
 
-register_activation_hook( __FILE__, array( $wp_slideshow, 'activate' ) );
-register_deactivation_hook( __FILE__, array( $wp_slideshow, 'deactivate' ) );
+register_activation_hook( __FILE__, array( $wpbf_slideshow, 'activate' ) );
+register_deactivation_hook( __FILE__, array( $wpbf_slideshow, 'deactivate' ) );

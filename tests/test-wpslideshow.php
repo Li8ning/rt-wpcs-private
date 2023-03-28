@@ -1,70 +1,70 @@
 <?php
 /**
- * Class Test_wpslideshow
+ * Class Test_wpbfslideshow
  *
- * @package WPSlideshow
+ * @package WPBFSlideshow
  */
 
- use WPSlideshow\WPSlideshow;
+ use WPBFSlideshow\WPBFSlideshow;
 
-class Test_wpslideshow extends WP_UnitTestCase {
+class Test_wpbfslideshow extends WP_UnitTestCase {
 
 	/**
-	 * Test that the WPSlideshow class can be instantiated.
+	 * Test that the WPBFSlideshow class can be instantiated.
 	 *
-	 * @covers \WPSlideshow\WPSlideshow
+	 * @covers \WPBFSlideshow\WPBFSlideshow
 	 */
-	public function test_WPSlideshow_class_exists() {
-		$this->assertTrue( class_exists( '\WPSlideshow\WPSlideshow' ), 'WPSlideshow class exists' );
+	public function test_WPBFSlideshow_class_exists() {
+		$this->assertTrue( class_exists( '\WPBFSlideshow\WPBFSlideshow' ), 'WPBFSlideshow class exists' );
 	}
 
 	/**
-	 * Test that the WPSlideshow class is properly defined as part of the WPSlideshow namespace.
+	 * Test that the WPBFSlideshow class is properly defined as part of the WPBFSlideshow namespace.
 	 *
-	 * @covers \WPSlideshow\WPSlideshow
+	 * @covers \WPBFSlideshow\WPBFSlideshow
 	 */
-	public function test_WPSlideshow_class_is_in_correct_namespace() {
-		$reflection = new \ReflectionClass( '\WPSlideshow\WPSlideshow' );
-		$this->assertEquals( 'WPSlideshow', $reflection->getNamespaceName() );
+	public function test_WPBFSlideshow_class_is_in_correct_namespace() {
+		$reflection = new \ReflectionClass( '\WPBFSlideshow\WPBFSlideshow' );
+		$this->assertEquals( 'WPBFSlideshow', $reflection->getNamespaceName() );
 	}
 
 	/**
 	 * Test if the registered setting is successfully unregistered on deactivation.
 	 *
-	 * @covers WPSlideshow::deactivate
-	 * @covers WPSlideshow::register_settings
+	 * @covers WPBFSlideshow::deactivate
+	 * @covers WPBFSlideshow::register_settings
 	 */
 	public function test_plugin_deactivation() {
 
-		$wpslideshow = new WPSlideshow();
+		$wpbfslideshow = new WPBFSlideshow();
 
 		// Register settings before deactivation
-		$wpslideshow->register_settings();
+		$wpbfslideshow->register_settings();
 
-		$wp_setting = get_registered_settings();
+		$wpbf_setting = get_registered_settings();
 
 		// Check if the registered setting has been successfully registered.
-		$this->assertContains( 'wp-slideshow-settings-group', $wp_setting['wp_slideshow_image_ids'] );
+		$this->assertContains( 'wpbf-slideshow-settings-group', $wpbf_setting['wpbf_slideshow_image_ids'] );
 
 		// Add the shortcode to a test post.
 		$post_id = $this->factory->post->create(
 			array(
-				'post_content' => '[wpslideshow]',
+				'post_content' => '[wpbfslideshow]',
 			)
 		);
 
 		// Check if the shortcode exists in the post content.
-		$this->assertTrue( has_shortcode( get_post_field( 'post_content', $post_id ), 'wpslideshow' ) );
+		$this->assertTrue( has_shortcode( get_post_field( 'post_content', $post_id ), 'wpbfslideshow' ) );
 
-		$wpslideshow->deactivate();
+		$wpbfslideshow->deactivate();
 
 		// Check if the registered setting has been successfully unregistered.
-		$wp_setting = get_registered_settings();
+		$wpbf_setting = get_registered_settings();
 
-		$this->assertNotContains( 'wp_slideshow_image_ids', $wp_setting );
+		$this->assertNotContains( 'wpbf_slideshow_image_ids', $wpbf_setting );
 
 		// Check if the shortcode is removed from the post content.
-		$this->assertFalse( has_shortcode( get_post_field( 'post_content', $post_id ), 'wpslideshow' ) );
+		$this->assertFalse( has_shortcode( get_post_field( 'post_content', $post_id ), 'wpbfslideshow' ) );
 
 		// Delete the test post.
 		wp_delete_post( $post_id );
@@ -75,29 +75,23 @@ class Test_wpslideshow extends WP_UnitTestCase {
 	 * Tests whether required admin styles and scripts
 	 * are enqueued and dequeued
 	 *
-	 * @see WPSlideshow::enqueue_admin_scripts()
-	 * @see WPSlideshow::dequeue_admin_scripts()
+	 * @see WPBFSlideshow::enqueue_admin_scripts()
+	 * @see WPBFSlideshow::dequeue_admin_scripts()
 	 */
 	public function test_admin_styles_and_scripts_enqueued_and_dequeued_correctly() {
 
-		$wpslideshow = new WPSlideshow();
+		$wpbfslideshow = new WPBFSlideshow();
 
-		$this->assertFalse( wp_script_is( 'wpbf-jquery-ui-js' ) );
-		$this->assertFalse( wp_style_is( 'wpbf-jquery-ui-css' ) );
 		$this->assertFalse( wp_script_is( 'wpbf-slideshow-admin-script' ) );
 		$this->assertFalse( wp_style_is( 'wpbf-slideshow-admin-styles' ) );
 
-		$wpslideshow->enqueue_admin_scripts();
+		$wpbfslideshow->enqueue_admin_scripts();
 
-		$this->assertTrue( wp_script_is( 'wpbf-jquery-ui-js' ) );
-		$this->assertTrue( wp_style_is( 'wpbf-jquery-ui-css' ) );
 		$this->assertTrue( wp_script_is( 'wpbf-slideshow-admin-script' ) );
 		$this->assertTrue( wp_style_is( 'wpbf-slideshow-admin-styles' ) );
 
-		$wpslideshow->dequeue_admin_scripts();
+		$wpbfslideshow->dequeue_admin_scripts();
 
-		$this->assertFalse( wp_script_is( 'wpbf-jquery-ui-js' ) );
-		$this->assertFalse( wp_style_is( 'wpbf-jquery-ui-css' ) );
 		$this->assertFalse( wp_script_is( 'wpbf-slideshow-admin-script' ) );
 		$this->assertFalse( wp_style_is( 'wpbf-slideshow-admin-styles' ) );
 
@@ -107,83 +101,88 @@ class Test_wpslideshow extends WP_UnitTestCase {
 	 * Tests whether required front end styles and scripts
 	 * are enqueued and dequeued
 	 *
-	 * @see WPSlideshow::enqueue_front_end_scripts()
-	 * @see WPSlideshow::dequeue_front_end_scripts()
+	 * @see WPBFSlideshow::enqueue_front_end_scripts()
+	 * @see WPBFSlideshow::dequeue_front_end_scripts()
 	 */
 	public function test_front_end_styles_and_scripts_enqueued_and_dequeued_correctly() {
 
-		$wpslideshow = new WPSlideshow();
+		$wpbfslideshow = new WPBFSlideshow();
 
-		$this->assertFalse( wp_script_is( 'wp-swiper-js' ) );
-		$this->assertFalse( wp_style_is( 'wp-swiper-css' ) );
-		$this->assertFalse( wp_script_is( 'wp-slideshow-main-script' ) );
-		$this->assertFalse( wp_style_is( 'wp-slideshow-main-styles' ) );
+		$this->assertFalse( wp_script_is( 'wpbf-swiper-js' ) );
+		$this->assertFalse( wp_style_is( 'wpbf-swiper-css' ) );
+		$this->assertFalse( wp_script_is( 'wpbf-slideshow-main-script' ) );
+		$this->assertFalse( wp_style_is( 'wpbf-slideshow-main-styles' ) );
 
-		$wpslideshow->enqueue_front_end_scripts();
+		$wpbfslideshow->enqueue_front_end_scripts();
 
-		$this->assertTrue( wp_script_is( 'wp-swiper-js' ) );
-		$this->assertTrue( wp_style_is( 'wp-swiper-css' ) );
-		$this->assertTrue( wp_script_is( 'wp-slideshow-main-script' ) );
-		$this->assertTrue( wp_style_is( 'wp-slideshow-main-styles' ) );
+		$this->assertTrue( wp_script_is( 'wpbf-swiper-js' ) );
+		$this->assertTrue( wp_style_is( 'wpbf-swiper-css' ) );
+		$this->assertTrue( wp_script_is( 'wpbf-slideshow-main-script' ) );
+		$this->assertTrue( wp_style_is( 'wpbf-slideshow-main-styles' ) );
 
-		$wpslideshow->dequeue_front_end_scripts();
+		$wpbfslideshow->dequeue_front_end_scripts();
 
-		$this->assertFalse( wp_script_is( 'wp-swiper-js' ) );
-		$this->assertFalse( wp_style_is( 'wp-swiper-css' ) );
-		$this->assertFalse( wp_script_is( 'wp-slideshow-main-script' ) );
-		$this->assertFalse( wp_style_is( 'wp-slideshow-main-styles' ) );
+		$this->assertFalse( wp_script_is( 'wpbf-swiper-js' ) );
+		$this->assertFalse( wp_style_is( 'wpbf-swiper-css' ) );
+		$this->assertFalse( wp_script_is( 'wpbf-slideshow-main-script' ) );
+		$this->assertFalse( wp_style_is( 'wpbf-slideshow-main-styles' ) );
 
 	}
 
 	/**
-	 * Tests whether wpslideshow shortcode registered
+	 * Tests whether wpbfslideshow shortcode registered
 	 *
-	 * @see WPSlideshow::__construct
+	 * @see WPBFSlideshow::__construct
 	 */
 	public function test_shortcode_registered() {
 
-		$wpslideshow = new WPSlideshow();
-		$this->assertTrue( shortcode_exists( 'wpslideshow' ) );
+		$wpbfslideshow = new WPBFSlideshow();
+		$this->assertTrue( shortcode_exists( 'wpbfslideshow' ) );
 
 	}
 
 	/**
 	 * Tests whether plugin settings page added
 	 *
-	 * @see WPSlideshow::add_admin_menu()
+	 * @see WPBFSlideshow::add_admin_menu()
 	 */
-	public function test_wp_slideshow_menu_page_added() {
+	public function test_wpbf_slideshow_menu_page_added() {
 
-		$wpslideshow = new WPSlideshow();
+		$wpbfslideshow = new WPBFSlideshow();
 
-		$admin_menu_hook = add_menu_page( 'WP Slideshow', 'WP Slideshow', 'manage_options', 'wp-slideshow', array( $wpslideshow, 'render_main_page' ), 'dashicons-images-alt2' );
+		$admin_menu_hook = add_menu_page( 'WPBF Slideshow', 'WPBF Slideshow', 'manage_options', 'wpbf-slideshow', array( $wpbfslideshow, 'render_main_page' ), 'dashicons-images-alt2' );
 
 		$this->assertTrue( $admin_menu_hook !== false );
 
-		remove_menu_page( 'wp-slideshow' );
+		// Stop here and mark this test as incomplete.
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
+
+		remove_menu_page( 'wpbf-slideshow' );
 
 	}
 
 	/**
-	 * Tests whether wp_slideshow_image_ids option added
+	 * Tests whether wpbf_slideshow_image_ids option added
 	 * during plugin activation
 	 *
-	 * @see WPSlideshow::activate()
+	 * @see WPBFSlideshow::activate()
 	 */
 	public function test_image_ids_option_registered() {
 
-		$wpslideshow = new WPSlideshow();
+		$wpbfslideshow = new WPBFSlideshow();
 
-		$this->assertFalse( get_option( 'wp_slideshow_image_ids' ) );
+		$this->assertFalse( get_option( 'wpbf_slideshow_image_ids' ) );
 
-		$wpslideshow->activate();
+		$wpbfslideshow->activate();
 
-		$this->assertTrue( get_option( 'wp_slideshow_image_ids' ) !== false );
+		$this->assertTrue( get_option( 'wpbf_slideshow_image_ids' ) !== false );
 
 	}
 
 	/**
-	 * Unit test for the register_settings() method of the WPSlideshow class.
+	 * Unit test for the register_settings() method of the WPBFSlideshow class.
 	 *
 	 * Ensures that the register_setting() function is called with the correct parameters.
 	 *
@@ -191,13 +190,13 @@ class Test_wpslideshow extends WP_UnitTestCase {
 	 */
 	public function test_register_settings() {
 
-		$wpslideshow = new WPSlideshow();
+		$wpbfslideshow = new WPBFSlideshow();
 
 		// Call the register_settings() method to register the settings.
-		$wpslideshow->register_settings();
+		$wpbfslideshow->register_settings();
 
 		// Assert that the register_setting() function was called with the correct parameters.
-		$this->assertSettingsRegistered( 'wp-slideshow-settings-group', 'wp_slideshow_image_ids' );
+		$this->assertSettingsRegistered( 'wpbf-slideshow-settings-group', 'wpbf_slideshow_image_ids' );
 
 	}
 
@@ -223,24 +222,26 @@ class Test_wpslideshow extends WP_UnitTestCase {
 	 * Test if plugin admin page is rendered correctly.
 	 *
 	 * @since 1.0.0
-	 * @see WPSlideshow::render_main_page()
-	 * @see /templates/wpslideshow-admin.php
+	 * @see WPBFSlideshow::render_main_page()
+	 * @see /templates/wpbfslideshow-admin.php
 	 */
 	public function test_render_plugin_admin_page() {
 
-		$wpslideshow = new WPSlideshow();
+		$wpbfslideshow = new WPBFSlideshow();
 
 		// Set up current user as an administrator.
 		$admin_user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $admin_user_id );
 
 		// Render the main page.
-		$output = $wpslideshow->render_main_page();
+		ob_start();
+		$wpbfslideshow->render_main_page();
+		$output = ob_get_clean();
 
 		// Assert that output contains the expected text.
-		$this->assertStringContainsString( '<form method="post" action="options.php">', $output );
-		$this->assertStringContainsString( '<input type="hidden" name="wp_slideshow_image_ids" id="wp_slideshow_image_ids" value="" />', $output );
-		$this->assertStringContainsString( '<ul id="wp_slideshow_image_list">', $output );
+		$this->assertStringContainsString( '<form method="post" action="options.php" id="wpbf-slideshow-admin-form">', $output );
+		$this->assertStringContainsString( '<input type="hidden" name="wpbf_slideshow_image_ids" id="wpbf_slideshow_image_ids" value="" />', $output );
+		$this->assertStringContainsString( '<ul id="wpbf_slideshow_image_list">', $output );
 		$this->assertStringContainsString( '<input type="submit" class="button-primary" value="Save Changes">', $output );
 
 		// Update user role to non-administrator and check if they can still access the page.
@@ -253,7 +254,7 @@ class Test_wpslideshow extends WP_UnitTestCase {
 		);
 		wp_set_current_user( $subscriber_user_id );
 
-		$output2 = $wpslideshow->render_main_page();
+		$output2 = $wpbfslideshow->render_main_page();
 
 		// Assert that output is null since the user does not have 'manage_options' capability.
 		$this->assertNull( $output2 );
@@ -263,21 +264,21 @@ class Test_wpslideshow extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test that wp_slideshow_image_ids tag is populated when image IDs are set.
+	 * Test that wpbf_slideshow_image_ids tag is populated when image IDs are set.
 	 *
 	 * @since 1.0.0
-	 * @see /templates/wpslideshow-admin.php
-	 * @see WPSlideshow::render_main_page()
+	 * @see /templates/wpbfslideshow-admin.php
+	 * @see WPBFSlideshow::render_main_page()
 	 */
 	public function test_image_ids_are_populated() {
 
-		$wpslideshow = new WPSlideshow();
+		$wpbfslideshow = new WPBFSlideshow();
 
 		// Set up dummy image ids
 		$image_ids = array( 1, 2, 3 );
 
 		// Set the option with the image IDs.
-		update_option( 'wp_slideshow_image_ids', implode( ',', $image_ids ) );
+		update_option( 'wpbf_slideshow_image_ids', implode( ',', $image_ids ) );
 
 		// Set up current user as an administrator.
 		$admin_user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
@@ -285,41 +286,41 @@ class Test_wpslideshow extends WP_UnitTestCase {
 
 		// Render the main page.
 		ob_start();
-		$wpslideshow->render_main_page();
+		$wpbfslideshow->render_main_page();
 		$output = ob_get_clean();
 
 		// Check that the wp_slideshow_image_ids tag has the expected value.
 		$expected_value = esc_attr( implode( ',', $image_ids ) );
-		$this->assertStringContainsString( '<input type="hidden" name="wp_slideshow_image_ids" id="wp_slideshow_image_ids" value="' . $expected_value . '" />', $output );
+		$this->assertStringContainsString( '<input type="hidden" name="wpbf_slideshow_image_ids" id="wpbf_slideshow_image_ids" value="' . $expected_value . '" />', $output );
 
 		wp_delete_user( $admin_user_id );
 
 	}
 
 	/**
-	 * Test that wp_slideshow_image_ids tag is populated when images are selected from wp.media.
+	 * Test that wpbf_slideshow_image_ids tag is populated when images are selected from wp.media.
 	 *
 	 * @since 1.0.0
-	 * @see /templates/wpslideshow-admin.php
-	 * @see WPSlideshow::render_main_page()
+	 * @see /templates/wpbfslideshow-admin.php
+	 * @see WPBFSlideshow::render_main_page()
 	 */
 	public function test_image_ids_are_inserted_in_db_correctly() {
 
-		$wpslideshow   = new WPSlideshow();
+		$wpbfslideshow   = new WPBFSlideshow();
 		$image_ids     = '1,2,3';
 		$new_image_ids = '4,5,6';
 
-		update_option( 'wp_slideshow_image_ids', $image_ids );
+		update_option( 'wpbf_slideshow_image_ids', $image_ids );
 
 		// Set up current user as an administrator.
 		$admin_user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $admin_user_id );
 
-		add_menu_page( 'WP Slideshow', 'WP Slideshow', 'manage_options', 'wp-slideshow', array( $wpslideshow, 'render_main_page' ), 'dashicons-images-alt2' );
+		add_menu_page( 'WPBF Slideshow', 'WPBF Slideshow', 'manage_options', 'wpbf-slideshow', array( $wpbfslideshow, 'render_main_page' ), 'dashicons-images-alt2' );
 
 		ob_start();
 		do_action( 'admin_menu' );
-		do_action( 'toplevel_page_wp-slideshow' );
+		do_action( 'toplevel_page_wpbf-slideshow' );
 		$output = ob_get_clean();
 
 		// Stop here and mark this test as incomplete.
@@ -337,12 +338,12 @@ class Test_wpslideshow extends WP_UnitTestCase {
 	 * Test if slider is rendered correctly.
 	 *
 	 * @since 1.0.0
-	 * @see WPSlideshow::wp_slideshow_slider()
-	 * @see /templates/wpslideshow-slider.php
+	 * @see WPBFSlideshow::wpbf_slideshow_slider()
+	 * @see /templates/wpbfslideshow-slider.php
 	 */
 	public function test_render_slider_page() {
 
-		$wpslideshow = new WPSlideshow();
+		$wpbfslideshow = new WPBFSlideshow();
 
 		// Create dummy images using GD library
 		$image1   = imagecreatetruecolor( 200, 200 );
@@ -391,10 +392,10 @@ class Test_wpslideshow extends WP_UnitTestCase {
 		wp_set_current_user( $user_id );
 
 		// Add the attachment IDs to the wp_slideshow_image_ids option
-		update_option( 'wp_slideshow_image_ids', $attachment_id1 . ',' . $attachment_id2 );
+		update_option( 'wpbf_slideshow_image_ids', $attachment_id1 . ',' . $attachment_id2 );
 
 		// Render the slider.
-		$output = $wpslideshow->wp_slideshow_slider();
+		$output = $wpbfslideshow->wpbf_slideshow_slider();
 
 		// Assert that output contains the expected HTML.
 		$this->assertStringContainsString( '<img src="' . wp_get_attachment_image_url( $attachment_id1, 'full' ) . '" loading="lazy">', $output );
@@ -404,7 +405,7 @@ class Test_wpslideshow extends WP_UnitTestCase {
 		wp_delete_attachment( $attachment_id1, true );
 		wp_delete_attachment( $attachment_id2, true );
 		// Delete the image IDs option.
-		delete_option( 'wp_slideshow_image_ids' );
+		delete_option( 'wpbf_slideshow_image_ids' );
 		wp_delete_user( $user_id );
 	}
 

@@ -2,13 +2,13 @@
 /**
  * Render slider page file.
  *
- * @package WPSlideshow
+ * @package WPBFSlideshow
  */
 
 ?>
 
 <!-- Slider main container -->
-<div class="swiper" id="wp-swiper-slider">
+<div class="swiper" id="wpbf-swiper-slider">
 
 	<!-- Additional required wrapper -->
 	<div class="swiper-wrapper">
@@ -16,7 +16,7 @@
 		<?php
 
 		// Get the saved image IDs.
-		$image_ids = explode( ',', get_option( 'wp_slideshow_image_ids', array() ) );
+		$image_ids = explode( ',', get_option( 'wpbf_slideshow_image_ids', array() ) );
 
 		// Loop through each saved image ID and display them.
 		foreach ( $image_ids as $image_id ) {
