@@ -5,7 +5,15 @@
  * @package WPBFSlideshow
  */
 
-?>
+// echo 'wpbfslideshow-slider.php loaded';
+
+ // Get the saved image IDs.
+ $get_image_ids = get_option( 'wpbf_slideshow_image_ids', array() );
+ $image_ids     = array();
+
+if ( ! empty( $get_image_ids ) ) {
+
+	?>
 
 <!-- Slider main container -->
 <div class="swiper" id="wpbf-swiper-slider">
@@ -13,7 +21,7 @@
 	<!-- Additional required wrapper -->
 	<div class="swiper-wrapper">
 
-		<?php
+	   <?php
 
 		// Get the saved image IDs.
 		$image_ids = explode( ',', get_option( 'wpbf_slideshow_image_ids', array() ) );
@@ -46,3 +54,6 @@
 	<div class="swiper-button-prev"></div>
 	<div class="swiper-button-next"></div>
 </div>
+
+	<?php
+}

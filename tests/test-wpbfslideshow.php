@@ -137,6 +137,7 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 	public function test_shortcode_registered() {
 
 		$wpbfslideshow = new WPBFSlideshow();
+
 		$this->assertTrue( shortcode_exists( 'wpbfslideshow' ) );
 
 	}
@@ -150,14 +151,9 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 
 		$wpbfslideshow = new WPBFSlideshow();
 
-		$admin_menu_hook = add_menu_page( 'WPBF Slideshow', 'WPBF Slideshow', 'manage_options', 'wpbf-slideshow', array( $wpbfslideshow, 'render_main_page' ), 'dashicons-images-alt2' );
+		$wpbfslideshow->add_admin_menu();
 
-		$this->assertTrue( $admin_menu_hook !== false );
-
-		// Stop here and mark this test as incomplete.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
+		$this->assertEquals( 'wpbf-slideshow', $GLOBALS['admin_page_hooks']['wpbf-slideshow'] );
 
 		remove_menu_page( 'wpbf-slideshow' );
 
@@ -306,7 +302,7 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 	 */
 	public function test_image_ids_are_inserted_in_db_correctly() {
 
-		$wpbfslideshow   = new WPBFSlideshow();
+		$wpbfslideshow = new WPBFSlideshow();
 		$image_ids     = '1,2,3';
 		$new_image_ids = '4,5,6';
 
@@ -345,47 +341,9 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 
 		$wpbfslideshow = new WPBFSlideshow();
 
-		// Create dummy images using GD library
-		$image1   = imagecreatetruecolor( 200, 200 );
-		$bgColor1 = imagecolorallocate( $image1, 255, 255, 255 );
-		imagefill( $image1, 0, 0, $bgColor1 );
-		// Generate the image filename and path
-		$image_filename = 'test_image1.jpg';
-		$upload_dir     = wp_upload_dir();
-		$image_path1    = $upload_dir['path'] . '/' . $image_filename;
-		imagejpeg( $image1, $image_path1 );
-
-		$image2   = imagecreatetruecolor( 300, 300 );
-		$bgColor2 = imagecolorallocate( $image2, 255, 255, 255 );
-		imagefill( $image2, 0, 0, $bgColor2 );
-		// Generate the image filename and path
-		$image_filename = 'test_image2.jpg';
-		$upload_dir     = wp_upload_dir();
-		$image_path2    = $upload_dir['path'] . '/' . $image_filename;
-		imagejpeg( $image2, $image_path2 );
-
-		// Upload dummy images to media library
-		$attachment_id1 = $this->factory->attachment->create_object(
-			$image_path1,
-			0,
-			array(
-				'post_mime_type' => 'image/jpeg',
-				'post_title'     => 'Test Image 1',
-				'post_content'   => '',
-				'post_status'    => 'inherit',
-			)
-		);
-
-		$attachment_id2 = $this->factory->attachment->create_object(
-			$image_path2,
-			0,
-			array(
-				'post_mime_type' => 'image/jpeg',
-				'post_title'     => 'Test Image 2',
-				'post_content'   => '',
-				'post_status'    => 'inherit',
-			)
-		);
+		// Insert dummy images
+		$attachment_id1 = $this->insert_attachement_into_media( 'test_image1.jpg', 'Test Image 1' );
+		$attachment_id2 = $this->insert_attachement_into_media( 'test_image2.jpg', 'Test Image 2' );
 
 		// Set up current user as an administrator.
 		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
@@ -407,6 +365,90 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 		// Delete the image IDs option.
 		delete_option( 'wpbf_slideshow_image_ids' );
 		wp_delete_user( $user_id );
+	}
+
+	/**
+	 * Test that the wpbfslider shortcode outputs nothing when no slide data is provided.
+	 */
+	public function test_empty_shortcode_output() {
+
+		// Stop here and mark this test as incomplete.
+		$this->markTestIncomplete(
+			'This test has not been implemented yet.'
+		);
+
+		$wpbfslideshow = new WPBFSlideshow();
+
+		$this->assertTrue( shortcode_exists( 'wpbfslideshow' ) );
+
+		// Set wpbf_slideshow_image_ids to an empty string
+		update_option( 'wpbf_slideshow_image_ids', '' );
+
+		$shortcode_output = do_shortcode( '[wpbfslideshow]' );
+
+		// $this->assertEmpty( $shortcode_output );
+
+		// Insert images in database
+		$image_id1 = $this->insert_attachement_into_media( 'test_image1.jpg', 'Test Image 1' );
+		$image_id2 = $this->insert_attachement_into_media( 'test_image2.jpg', 'Test Image 2' );
+
+		// Add the attachment IDs to the wp_slideshow_image_ids option
+		update_option( 'wpbf_slideshow_image_ids', $image_id1 . ',' . $image_id2 );
+
+		$shortcode_output = do_shortcode( '[wpbfslideshow]' );
+
+		var_dump( $shortcode_output );
+
+		// Assert that output contains the expected HTML.
+		// $this->assertStringContainsString( '<img src="' . wp_get_attachment_image_url( $image_id1, 'full' ) . '" loading="lazy">', $shortcode_output );
+		// $this->assertStringContainsString( '<img src="' . wp_get_attachment_image_url( $image_id2, 'full' ) . '" loading="lazy">', $shortcode_output );
+
+		// Clean up
+		wp_delete_attachment( $image_id1, true );
+		wp_delete_attachment( $image_id2, true );
+		// Delete the image IDs option.
+		delete_option( 'wpbf_slideshow_image_ids' );
+
+	}
+
+	/**
+	 * Inserts a dummy attachment into the WordPress media library.
+	 *
+	 * This method creates a dummy image using the GD library, saves it to the server, and then
+	 * uploads it to the WordPress media library. The attachment ID of the uploaded image is
+	 * returned.
+	 *
+	 * @param string $image_file_name The filename of the dummy image to create.
+	 * @param string $image_post_title The post title of the attachment to create.
+	 *
+	 * @return int The attachment ID of the uploaded image.
+	 */
+	private function insert_attachement_into_media( $image_file_name, $image_post_title ) {
+
+		// Create dummy images using GD library
+		$image   = imagecreatetruecolor( 200, 200 );
+		$bgColor = imagecolorallocate( $image, 255, 255, 255 );
+		imagefill( $image, 0, 0, $bgColor );
+		// Generate the image filename and path
+		$image_filename = $image_file_name;
+		$upload_dir     = wp_upload_dir();
+		$image_path     = $upload_dir['path'] . '/' . $image_filename;
+		imagejpeg( $image, $image_path );
+
+		// Upload dummy images to media library
+		$attachment_id = $this->factory->attachment->create_object(
+			$image_path,
+			0,
+			array(
+				'post_mime_type' => 'image/jpeg',
+				'post_title'     => $image_post_title,
+				'post_content'   => '',
+				'post_status'    => 'inherit',
+			)
+		);
+
+		return $attachment_id;
+
 	}
 
 }

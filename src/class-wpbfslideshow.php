@@ -217,6 +217,14 @@ class WPBFSlideshow {
 	 */
 	public function wpbf_slideshow_slider() {
 
+		// echo 'wpbf_slideshow_slider() called----';
+		// if ( file_exists( plugin_dir_path( __FILE__ ) . '../templates/wpbfslideshow-slider.php' ) ) {
+		// echo 'wpbfslideshow-slider.php exists';
+		// } else {
+		// echo 'wpbfslideshow-slider.php does not exist';
+		// }
+		// error_reporting( E_ALL );
+		// ini_set( 'display_errors', 1 );
 		ob_start();
 		// Render the slider.
 		require_once plugin_dir_path( __FILE__ ) . '../templates/wpbfslideshow-slider.php';
