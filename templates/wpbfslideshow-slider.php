@@ -5,8 +5,6 @@
  * @package WPBFSlideshow
  */
 
-// echo 'wpbfslideshow-slider.php loaded';
-
  // Get the saved image IDs.
  $get_image_ids = get_option( 'wpbf_slideshow_image_ids', array() );
  $image_ids     = array();

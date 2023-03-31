@@ -369,13 +369,12 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 
 	/**
 	 * Test that the wpbfslider shortcode outputs nothing when no slide data is provided.
+	 * 
+	 * @since 1.0.0
+	 * @see WPBFSlideshow::wpbf_slideshow_slider()
+	 * @see /templates/wpbfslideshow-slider.php
 	 */
 	public function test_empty_shortcode_output() {
-
-		// Stop here and mark this test as incomplete.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
 
 		$wpbfslideshow = new WPBFSlideshow();
 
@@ -386,7 +385,27 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 
 		$shortcode_output = do_shortcode( '[wpbfslideshow]' );
 
-		// $this->assertEmpty( $shortcode_output );
+		$this->assertEmpty( $shortcode_output );
+
+		remove_shortcode( 'wpbfslideshow' );
+
+		// Delete the image IDs option.
+		delete_option( 'wpbf_slideshow_image_ids' );
+
+	}
+
+	/**
+	 * Test that the wpbfslider shortcode outputs correctly when images are present in the slider.
+	 * 
+	 * @since 1.0.0
+	 * @see WPBFSlideshow::wpbf_slideshow_slider()
+	 * @see /templates/wpbfslideshow-slider.php
+	 */
+	public function test_shortcode_outputs_correctly_when_images_are_present() {
+
+		$wpbfslideshow = new WPBFSlideshow();
+
+		$this->assertTrue( shortcode_exists( 'wpbfslideshow' ) );
 
 		// Insert images in database
 		$image_id1 = $this->insert_attachement_into_media( 'test_image1.jpg', 'Test Image 1' );
@@ -397,15 +416,14 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 
 		$shortcode_output = do_shortcode( '[wpbfslideshow]' );
 
-		var_dump( $shortcode_output );
-
 		// Assert that output contains the expected HTML.
-		// $this->assertStringContainsString( '<img src="' . wp_get_attachment_image_url( $image_id1, 'full' ) . '" loading="lazy">', $shortcode_output );
-		// $this->assertStringContainsString( '<img src="' . wp_get_attachment_image_url( $image_id2, 'full' ) . '" loading="lazy">', $shortcode_output );
+		$this->assertStringContainsString( '<img src="' . wp_get_attachment_image_url( $image_id1, 'full' ) . '" loading="lazy">', $shortcode_output );
+		$this->assertStringContainsString( '<img src="' . wp_get_attachment_image_url( $image_id2, 'full' ) . '" loading="lazy">', $shortcode_output );
 
 		// Clean up
 		wp_delete_attachment( $image_id1, true );
 		wp_delete_attachment( $image_id2, true );
+		remove_shortcode( 'wpbfslideshow' );
 		// Delete the image IDs option.
 		delete_option( 'wpbf_slideshow_image_ids' );
 

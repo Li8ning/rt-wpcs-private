@@ -217,18 +217,23 @@ class WPBFSlideshow {
 	 */
 	public function wpbf_slideshow_slider() {
 
-		// echo 'wpbf_slideshow_slider() called----';
-		// if ( file_exists( plugin_dir_path( __FILE__ ) . '../templates/wpbfslideshow-slider.php' ) ) {
-		// echo 'wpbfslideshow-slider.php exists';
-		// } else {
-		// echo 'wpbfslideshow-slider.php does not exist';
-		// }
-		// error_reporting( E_ALL );
-		// ini_set( 'display_errors', 1 );
-		ob_start();
-		// Render the slider.
-		require_once plugin_dir_path( __FILE__ ) . '../templates/wpbfslideshow-slider.php';
-		$content = ob_get_clean();
+		global $post;
+		$content = '';
+
+		if ( ! did_action( 'wpbfslideshow_shortcode' ) ) {
+			// Return an error message if the function is called directly.
+			return 'Error: This function cannot be called directly.';
+		}
+
+		if ( has_shortcode( $post->post_content, 'wpbfslideshow' ) ) {
+			
+			// Render the slider.
+			ob_start();
+			require_once plugin_dir_path( __FILE__ ) . '../templates/wpbfslideshow-slider.php';
+			$content = ob_get_clean();
+
+		}
+
 		return $content;
 
 	}
