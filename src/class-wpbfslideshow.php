@@ -217,17 +217,10 @@ class WPBFSlideshow {
 	 */
 	public function wpbf_slideshow_slider() {
 
-		global $post;
-
-		// Check if the wpbfslideshow shortcode is called
-		if ( empty( $post ) && has_shortcode( $post->post_content, 'wpbfslideshow' ) ) {
-
 			// Render the slider.
 			ob_start();
 			require_once plugin_dir_path( __FILE__ ) . '../templates/wpbfslideshow-slider.php';
 			$content = ob_get_clean();
-
-		}
 
 	}
 

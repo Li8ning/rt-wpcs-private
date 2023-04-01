@@ -369,7 +369,7 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 
 	/**
 	 * Test that the wpbfslider shortcode outputs nothing when no slide data is provided.
-	 * 
+	 *
 	 * @since 1.0.0
 	 * @see WPBFSlideshow::wpbf_slideshow_slider()
 	 * @see /templates/wpbfslideshow-slider.php
@@ -396,7 +396,7 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 
 	/**
 	 * Test that the wpbfslider shortcode outputs correctly when images are present in the slider.
-	 * 
+	 *
 	 * @since 1.0.0
 	 * @see WPBFSlideshow::wpbf_slideshow_slider()
 	 * @see /templates/wpbfslideshow-slider.php
@@ -415,8 +415,6 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 		update_option( 'wpbf_slideshow_image_ids', $image_id1 . ',' . $image_id2 );
 
 		$shortcode_output = do_shortcode( '[wpbfslideshow]' );
-
-		// var_dump( has_action( 'wpbfslideshow_shortcode' ) );
 
 		// Assert that output contains the expected HTML.
 		$this->assertStringContainsString( '<img src="' . wp_get_attachment_image_url( $image_id1, 'full' ) . '" loading="lazy">', $shortcode_output );
