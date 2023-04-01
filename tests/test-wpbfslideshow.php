@@ -337,7 +337,7 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 	 * @see WPBFSlideshow::wpbf_slideshow_slider()
 	 * @see /templates/wpbfslideshow-slider.php
 	 */
-	public function test_render_slider_page() {
+	public function test_render_slider_page_access_directly() {
 
 		$wpbfslideshow = new WPBFSlideshow();
 
@@ -356,8 +356,8 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 		$output = $wpbfslideshow->wpbf_slideshow_slider();
 
 		// Assert that output contains the expected HTML.
-		$this->assertStringContainsString( '<img src="' . wp_get_attachment_image_url( $attachment_id1, 'full' ) . '" loading="lazy">', $output );
-		$this->assertStringContainsString( '<img src="' . wp_get_attachment_image_url( $attachment_id2, 'full' ) . '" loading="lazy">', $output );
+		$this->assertStringNotContainsString( '<img src="' . wp_get_attachment_image_url( $attachment_id1, 'full' ) . '" loading="lazy">', $output );
+		$this->assertStringNotContainsString( '<img src="' . wp_get_attachment_image_url( $attachment_id2, 'full' ) . '" loading="lazy">', $output );
 
 		// Clean up
 		wp_delete_attachment( $attachment_id1, true );
@@ -415,6 +415,8 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 		update_option( 'wpbf_slideshow_image_ids', $image_id1 . ',' . $image_id2 );
 
 		$shortcode_output = do_shortcode( '[wpbfslideshow]' );
+
+		// var_dump( has_action( 'wpbfslideshow_shortcode' ) );
 
 		// Assert that output contains the expected HTML.
 		$this->assertStringContainsString( '<img src="' . wp_get_attachment_image_url( $image_id1, 'full' ) . '" loading="lazy">', $shortcode_output );

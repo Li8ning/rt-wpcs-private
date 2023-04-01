@@ -218,23 +218,16 @@ class WPBFSlideshow {
 	public function wpbf_slideshow_slider() {
 
 		global $post;
-		$content = '';
 
-		if ( ! did_action( 'wpbfslideshow_shortcode' ) ) {
-			// Return an error message if the function is called directly.
-			return 'Error: This function cannot be called directly.';
-		}
+		// Check if the wpbfslideshow shortcode is called
+		if ( empty( $post ) && has_shortcode( $post->post_content, 'wpbfslideshow' ) ) {
 
-		if ( has_shortcode( $post->post_content, 'wpbfslideshow' ) ) {
-			
 			// Render the slider.
 			ob_start();
 			require_once plugin_dir_path( __FILE__ ) . '../templates/wpbfslideshow-slider.php';
 			$content = ob_get_clean();
 
 		}
-
-		return $content;
 
 	}
 
