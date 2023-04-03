@@ -221,6 +221,7 @@ class WPBFSlideshow {
 			ob_start();
 			require_once plugin_dir_path( __FILE__ ) . '../templates/wpbfslideshow-slider.php';
 			$content = ob_get_clean();
+			return $content;
 
 	}
 

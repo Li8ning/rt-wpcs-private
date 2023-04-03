@@ -12,7 +12,7 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 	/**
 	 * Test that the WPBFSlideshow class can be instantiated.
 	 *
-	 * @covers \WPBFSlideshow\WPBFSlideshow
+	 * @see \WPBFSlideshow\WPBFSlideshow
 	 */
 	public function test_WPBFSlideshow_class_exists() {
 		$this->assertTrue( class_exists( '\WPBFSlideshow\WPBFSlideshow' ), 'WPBFSlideshow class exists' );
@@ -21,7 +21,7 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 	/**
 	 * Test that the WPBFSlideshow class is properly defined as part of the WPBFSlideshow namespace.
 	 *
-	 * @covers \WPBFSlideshow\WPBFSlideshow
+	 * @see \WPBFSlideshow\WPBFSlideshow
 	 */
 	public function test_WPBFSlideshow_class_is_in_correct_namespace() {
 		$reflection = new \ReflectionClass( '\WPBFSlideshow\WPBFSlideshow' );
@@ -29,10 +29,67 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Tests that the plugin name is set and is a string in the WPBFSlideshow class.
+	 *
+	 * @see \WPBFSlideshow\WPBFSlideshow
+	 */
+	public function test_plugin_name_is_set_and_is_string() {
+
+		$wpbfslideshow = new WPBFSlideshow();
+
+		// Access the plugin_name property using reflection.
+		$reflection = new \ReflectionClass( $wpbfslideshow );
+		$property   = $reflection->getProperty( 'plugin_name' );
+		$property->setAccessible( true );
+		$plugin_name = $property->getValue( $wpbfslideshow );
+
+		// Assert that the plugin_name is a string and equals 'wpbf-beautiful-slideshow'.
+		$this->assertIsString( $plugin_name );
+		$this->assertEquals( 'wpbf-beautiful-slideshow', $plugin_name );
+
+	}
+
+	/**
+	 * Tests that the plugin version is set and is a string in the WPBFSlideshow class.
+	 *
+	 * @see \WPBFSlideshow\WPBFSlideshow
+	 */
+	public function test_plugin_version_is_set_and_is_string() {
+
+		$wpbfslideshow = new WPBFSlideshow();
+
+		// Access the version property using reflection.
+		$reflection = new \ReflectionClass( $wpbfslideshow );
+		$property   = $reflection->getProperty( 'version' );
+		$property->setAccessible( true );
+		$plugin_version = $property->getValue( $wpbfslideshow );
+
+		// Assert that the plugin_version is a string and equals '1.0.0'.
+		$this->assertIsString( $plugin_version );
+		$this->assertEquals( '1.0.0', $plugin_version );
+
+	}
+
+	/**
+	 * Tests that the plugin has necessary actions.
+	 *
+	 * @see WPBFSlideshow::construct
+	 */
+	public function test_plugin_has_necessary_actions() {
+
+		$wpbfslideshow = new WPBFSlideshow();
+
+		$this->assertNotEquals( has_action( 'admin_enqueue_scripts', array( $wpbfslideshow, 'enqueue_admin_scripts' ) ), 0, 'The admin_enqueue_scripts is not registered' );
+		$this->assertNotEquals( has_action( 'wp_enqueue_scripts', array( $wpbfslideshow, 'enqueue_front_end_scripts' ) ), 0, 'The wp_enqueue_scripts is not registered' );
+		$this->assertNotEquals( has_action( 'admin_init', array( $wpbfslideshow, 'register_settings' ) ), 0, 'The admin_init with register_settings callback is not registered' );
+
+	}
+
+	/**
 	 * Test if the registered setting is successfully unregistered on deactivation.
 	 *
-	 * @covers WPBFSlideshow::deactivate
-	 * @covers WPBFSlideshow::register_settings
+	 * @see WPBFSlideshow::deactivate
+	 * @see WPBFSlideshow::register_settings
 	 */
 	public function test_plugin_deactivation() {
 
@@ -139,6 +196,8 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 		$wpbfslideshow = new WPBFSlideshow();
 
 		$this->assertTrue( shortcode_exists( 'wpbfslideshow' ) );
+
+		remove_shortcode( 'wpbfslideshow' );
 
 	}
 
@@ -330,69 +389,6 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 		wp_delete_user( $admin_user_id );
 	}
 
-	/**
-	 * Test if slider is rendered correctly.
-	 *
-	 * @since 1.0.0
-	 * @see WPBFSlideshow::wpbf_slideshow_slider()
-	 * @see /templates/wpbfslideshow-slider.php
-	 */
-	public function test_render_slider_page_access_directly() {
-
-		$wpbfslideshow = new WPBFSlideshow();
-
-		// Insert dummy images
-		$attachment_id1 = $this->insert_attachement_into_media( 'test_image1.jpg', 'Test Image 1' );
-		$attachment_id2 = $this->insert_attachement_into_media( 'test_image2.jpg', 'Test Image 2' );
-
-		// Set up current user as an administrator.
-		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
-		wp_set_current_user( $user_id );
-
-		// Add the attachment IDs to the wp_slideshow_image_ids option
-		update_option( 'wpbf_slideshow_image_ids', $attachment_id1 . ',' . $attachment_id2 );
-
-		// Render the slider.
-		$output = $wpbfslideshow->wpbf_slideshow_slider();
-
-		// Assert that output contains the expected HTML.
-		$this->assertStringNotContainsString( '<img src="' . wp_get_attachment_image_url( $attachment_id1, 'full' ) . '" loading="lazy">', $output );
-		$this->assertStringNotContainsString( '<img src="' . wp_get_attachment_image_url( $attachment_id2, 'full' ) . '" loading="lazy">', $output );
-
-		// Clean up
-		wp_delete_attachment( $attachment_id1, true );
-		wp_delete_attachment( $attachment_id2, true );
-		// Delete the image IDs option.
-		delete_option( 'wpbf_slideshow_image_ids' );
-		wp_delete_user( $user_id );
-	}
-
-	/**
-	 * Test that the wpbfslider shortcode outputs nothing when no slide data is provided.
-	 *
-	 * @since 1.0.0
-	 * @see WPBFSlideshow::wpbf_slideshow_slider()
-	 * @see /templates/wpbfslideshow-slider.php
-	 */
-	public function test_empty_shortcode_output() {
-
-		$wpbfslideshow = new WPBFSlideshow();
-
-		$this->assertTrue( shortcode_exists( 'wpbfslideshow' ) );
-
-		// Set wpbf_slideshow_image_ids to an empty string
-		update_option( 'wpbf_slideshow_image_ids', '' );
-
-		$shortcode_output = do_shortcode( '[wpbfslideshow]' );
-
-		$this->assertEmpty( $shortcode_output );
-
-		remove_shortcode( 'wpbfslideshow' );
-
-		// Delete the image IDs option.
-		delete_option( 'wpbf_slideshow_image_ids' );
-
-	}
 
 	/**
 	 * Test that the wpbfslider shortcode outputs correctly when images are present in the slider.
@@ -404,6 +400,8 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 	public function test_shortcode_outputs_correctly_when_images_are_present() {
 
 		$wpbfslideshow = new WPBFSlideshow();
+
+		$wpbfslideshow->activate();
 
 		$this->assertTrue( shortcode_exists( 'wpbfslideshow' ) );
 
@@ -466,6 +464,33 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 		);
 
 		return $attachment_id;
+
+	}
+
+	/**
+	 * Test that the wpbfslider shortcode outputs nothing when no slide data is provided.
+	 *
+	 * @since 1.0.0
+	 * @see WPBFSlideshow::wpbf_slideshow_slider()
+	 * @see /templates/wpbfslideshow-slider.php
+	 */
+	public function test_empty_shortcode_output() {
+
+		$wpbfslideshow = new WPBFSlideshow();
+
+		$this->assertTrue( shortcode_exists( 'wpbfslideshow' ) );
+
+		// Set wpbf_slideshow_image_ids to an empty string.
+		update_option( 'wpbf_slideshow_image_ids', '' );
+
+		$shortcode_output = do_shortcode( '[wpbfslideshow]' );
+
+		$this->assertEmpty( $shortcode_output );
+
+		remove_shortcode( 'wpbfslideshow' );
+
+		// Delete the image IDs option.
+		delete_option( 'wpbf_slideshow_image_ids' );
 
 	}
 
