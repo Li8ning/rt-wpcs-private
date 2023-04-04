@@ -77,12 +77,10 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 	 */
 	public function test_plugin_has_necessary_actions() {
 
-		$mock = $this->getMockBuilder( 'WP' )
-			   ->setMethods( array( 'is_admin' ) )
-			   ->getMock();
-		$mock->expects( $this->any() )
-			   ->method( 'is_admin' )
-			   ->will( $this->returnValue( true ) );
+		$admin_user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
+		wp_set_current_user( $admin_user_id );
+
+		set_current_screen( 'dashboard' );
 
 		$wpbfslideshow = new WPBFSlideshow();
 
@@ -90,12 +88,11 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 		$this->assertNotEquals( has_action( 'wp_enqueue_scripts', array( $wpbfslideshow, 'enqueue_front_end_scripts' ) ), 0, 'The wp_enqueue_scripts is not registered' );
 		$this->assertNotEquals( has_action( 'admin_init', array( $wpbfslideshow, 'register_settings' ) ), 0, 'The admin_init with register_settings callback is not registered' );
 
-		if ( $mock->is_admin() ) {
+		// Assert if admin_menu action is registered if user is admin
+		$this->assertNotEquals( has_action( 'admin_menu', array( $wpbfslideshow, 'add_admin_menu' ) ), 0, 'The admin_menu action is not registered' );
 
-			// Assert if admin_menu action is registered if user is admin
-			$this->assertNotEquals( has_action( 'admin_menu', array( $wpbfslideshow, 'add_admin_menu' ) ), 0, 'The admin_menu action is not registered' );
-
-		}
+		wp_delete_user( $admin_user_id );
+		unset( $GLOBALS[ 'current_screen' ] );
 
 	}
 
