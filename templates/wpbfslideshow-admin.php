@@ -34,7 +34,7 @@
 
 			// Loop through each saved image ID and display them.
 			foreach ( $image_ids as $image_id ) {
-
+				
 				$image_url = wp_get_attachment_image_url( $image_id, 'thumbnail' );
 
 				if ( $image_url ) {

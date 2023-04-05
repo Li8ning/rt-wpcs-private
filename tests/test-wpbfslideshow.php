@@ -92,7 +92,7 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 		$this->assertNotEquals( has_action( 'admin_menu', array( $wpbfslideshow, 'add_admin_menu' ) ), 0, 'The admin_menu action is not registered' );
 
 		wp_delete_user( $admin_user_id );
-		unset( $GLOBALS[ 'current_screen' ] );
+		unset( $GLOBALS['current_screen'] );
 
 	}
 
@@ -362,44 +362,6 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 		wp_delete_user( $admin_user_id );
 
 	}
-
-	/**
-	 * Test that wpbf_slideshow_image_ids tag is populated when images are selected from wp.media.
-	 *
-	 * @since 1.0.0
-	 * @see /templates/wpbfslideshow-admin.php
-	 * @see WPBFSlideshow::render_main_page()
-	 */
-	public function test_image_ids_are_inserted_in_db_correctly() {
-
-		$wpbfslideshow = new WPBFSlideshow();
-		$image_ids     = '1,2,3';
-		$new_image_ids = '4,5,6';
-
-		update_option( 'wpbf_slideshow_image_ids', $image_ids );
-
-		// Set up current user as an administrator.
-		$admin_user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
-		wp_set_current_user( $admin_user_id );
-
-		add_menu_page( 'WPBF Slideshow', 'WPBF Slideshow', 'manage_options', 'wpbf-slideshow', array( $wpbfslideshow, 'render_main_page' ), 'dashicons-images-alt2' );
-
-		ob_start();
-		do_action( 'admin_menu' );
-		do_action( 'toplevel_page_wpbf-slideshow' );
-		$output = ob_get_clean();
-
-		// Stop here and mark this test as incomplete.
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
-
-		// Check if the render_main_page function is called
-		$this->assertTrue( did_action( 'render_main_page' ) );
-
-		wp_delete_user( $admin_user_id );
-	}
-
 
 	/**
 	 * Test that the wpbfslider shortcode outputs correctly when images are present in the slider.
