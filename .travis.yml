@@ -3,6 +3,11 @@ dist: trusty
 
 language: php
 
+addons:
+  apt:
+    packages:
+      - libgd-dev
+
 notifications:
   email:
     on_success: never

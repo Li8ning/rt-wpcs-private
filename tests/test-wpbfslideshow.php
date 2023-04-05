@@ -1,13 +1,13 @@
 <?php
 /**
- * Class Test_wpbfslideshow
+ * Class Test_WPBFSlideshow
  *
  * @package WPBFSlideshow
  */
 
 use WPBFSlideshow\WPBFSlideshow;
 
-class Test_wpbfslideshow extends WP_UnitTestCase {
+class Test_WPBFSlideshow extends WP_UnitTestCase {
 
 	/**
 	 * Test that the WPBFSlideshow class can be instantiated.
@@ -432,9 +432,9 @@ class Test_wpbfslideshow extends WP_UnitTestCase {
 	private function insert_attachement_into_media( $image_file_name, $image_post_title ) {
 
 		// Create dummy images using GD library
-		$image   = imagecreatetruecolor( 200, 200 );
-		$bgColor = imagecolorallocate( $image, 255, 255, 255 );
-		imagefill( $image, 0, 0, $bgColor );
+		$image    = imagecreatetruecolor( 200, 200 );
+		$bg_color = imagecolorallocate( $image, 255, 255, 255 );
+		imagefill( $image, 0, 0, $bg_color );
 		// Generate the image filename and path
 		$image_filename = $image_file_name;
 		$upload_dir     = wp_upload_dir();
