@@ -1,6 +1,6 @@
 <?php return array(
     'root' => array(
-        'name' => 'speed/rt-slideshow',
+        'name' => 'speed/wp-beautiful-slideshow',
         'pretty_version' => '1.0.0',
         'version' => '1.0.0.0',
         'reference' => NULL,
@@ -128,9 +128,9 @@
             'dev_requirement' => true,
         ),
         'phpunit/phpunit' => array(
-            'pretty_version' => '9.6.5',
-            'version' => '9.6.5.0',
-            'reference' => '86e761949019ae83f49240b2f2123fb5ab3b2fc5',
+            'pretty_version' => '9.6.6',
+            'version' => '9.6.6.0',
+            'reference' => 'b65d59a059d3004a040c16a82e07bbdf6cfdd115',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpunit/phpunit',
             'aliases' => array(),
@@ -280,7 +280,7 @@
             'aliases' => array(),
             'dev_requirement' => true,
         ),
-        'speed/rt-slideshow' => array(
+        'speed/wp-beautiful-slideshow' => array(
             'pretty_version' => '1.0.0',
             'version' => '1.0.0.0',
             'reference' => NULL,
@@ -317,9 +317,9 @@
             'dev_requirement' => true,
         ),
         'yoast/phpunit-polyfills' => array(
-            'pretty_version' => '1.0.4',
-            'version' => '1.0.4.0',
-            'reference' => '3c621ff5429d2b1ff96dc5808ad6cde99d31ea4c',
+            'pretty_version' => '1.0.5',
+            'version' => '1.0.5.0',
+            'reference' => '3b59adeef77fb1c03ff5381dbb9d68b0aaff3171',
             'type' => 'library',
             'install_path' => __DIR__ . '/../yoast/phpunit-polyfills',
             'aliases' => array(),
