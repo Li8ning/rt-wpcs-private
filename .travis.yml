@@ -34,6 +34,11 @@ matrix:
       env: WP_VERSION=trunk
     - php: 5.6
       env: WP_TRAVISCI=phpcs
+      before_script:
+        - composer global require squizlabs/php_codesniffer
+        - phpenv rehash
+      script:
+        - phpcs --standard=WordPress,WordPress-Core,WordPress-Docs src/
 
 before_script:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
@@ -46,7 +51,7 @@ before_script:
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
       bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-      composer global require "phpunit/phpunit=4.8.*|5.7.*"
+      composer global require "phpunit/legacy-namespace=^3.8"
     fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then

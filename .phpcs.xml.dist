@@ -44,4 +44,6 @@
 			<property name="blank_line_check" value="true"/>
 		</properties>
 	</rule>
+	<rule ref="WordPress-Core"/>
+    <rule ref="WordPress-Docs"/>
 </ruleset>
