@@ -394,9 +394,12 @@ class Test_WPBFSlideshow extends WP_UnitTestCase {
 
 		$this->assertTrue( shortcode_exists( 'wpbfslideshow' ), 'wpbfslideshow shortcode does not exists' );
 
+		$image_path1 = plugin_dir_path( __FILE__ ) . '../assets/img/Bane1.jpg';
+		$image_path2 = plugin_dir_path( __FILE__ ) . '../assets/img/Abbadon1.jpg';
+
 		// Insert images in database
-		$image_id1 = $this->insert_attachement_into_media( 'test_image1.jpg', 'Test Image 1' );
-		$image_id2 = $this->insert_attachement_into_media( 'test_image2.jpg', 'Test Image 2' );
+		$image_id1 = $this->insert_attachement_into_media( $image_path1 );
+		$image_id2 = $this->insert_attachement_into_media( $image_path2 );
 
 		// Add the attachment IDs to the wp_slideshow_image_ids option
 		update_option( 'wpbf_slideshow_image_ids', $image_id1 . ',' . $image_id2 );
@@ -419,41 +422,23 @@ class Test_WPBFSlideshow extends WP_UnitTestCase {
 	/**
 	 * Inserts a dummy attachment into the WordPress media library.
 	 *
-	 * This method creates a dummy image using the GD library, saves it to the server, and then
-	 * uploads it to the WordPress media library. The attachment ID of the uploaded image is
-	 * returned.
+	 * This method uploads a dummy image into WordPress media library.
+	 * The attachment ID of the uploaded image is returned.
 	 *
 	 * @since 1.0.0
 	 * @param string $image_file_name The filename of the dummy image to create.
-	 * @param string $image_post_title The post title of the attachment to create.
 	 *
 	 * @return int The attachment ID of the uploaded image.
 	 */
-	private function insert_attachement_into_media( $image_file_name, $image_post_title ) {
-
-		// Create dummy images using GD library
-		$image    = imagecreatetruecolor( 200, 200 );
-		$bg_color = imagecolorallocate( $image, 255, 255, 255 );
-		imagefill( $image, 0, 0, $bg_color );
-		// Generate the image filename and path
-		$image_filename = $image_file_name;
-		$upload_dir     = wp_upload_dir();
-		$image_path     = $upload_dir['path'] . '/' . $image_filename;
-		imagejpeg( $image, $image_path );
+	private function insert_attachement_into_media( $image_path ) {
 
 		// Upload dummy images to media library
-		$attachment_id = $this->factory->attachment->create_object(
-			$image_path,
-			0,
-			array(
-				'post_mime_type' => 'image/jpeg',
-				'post_title'     => $image_post_title,
-				'post_content'   => '',
-				'post_status'    => 'inherit',
-			)
-		);
+		$attachment = $this->factory->attachment->create_upload_object( $image_path );
+		$this->assertNotEquals( 0, $attachment, 'Failed to create attachment object from dummy image file.' );
 
-		return $attachment_id;
+		wp_update_attachment_metadata( $attachment, wp_generate_attachment_metadata( $attachment, $image_path ) );
+
+		return $attachment;
 
 	}
 
