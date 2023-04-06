@@ -14,7 +14,8 @@
 	"require-dev": {
 		"wp-coding-standards/wpcs": "^2.3",
 		"phpcompatibility/phpcompatibility-wp": "^2.1",
-        "yoast/phpunit-polyfills": "^1.0"
+        "yoast/phpunit-polyfills": "^1.0",
+		"phpunit/phpunit-legacy-namespace": "*"
 	},
 	"config": {
 		"allow-plugins": {
@@ -33,6 +34,8 @@
 		}
 	},
 	"scripts": {
-		"lint": "phpcs --standard=WordPress src/"
+		"lint": [
+			"phpcs --standard=WordPress,WordPress-Core,WordPress-Docs src/"
+		]
 	}	
 }
