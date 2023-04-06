@@ -16,6 +16,13 @@ cache:
   directories:
     - $HOME/.composer/cache
 
+before_install:
+  - mkdir -p ~/.composer
+  - |
+    if [ ! -f ~/.composer/auth.json ]; then
+      echo '{"config": {"allow-plugins": {"dealerdirect/phpcodesniffer-composer-installer": true}}}' > ~/.composer/auth.json
+    fi
+
 matrix:
   include:
     - php: 7.4
@@ -50,6 +57,7 @@ before_script:
     fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
+      composer global config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
       composer global require wp-coding-standards/wpcs
       composer global require phpcompatibility/php-compatibility
       composer global require phpcompatibility/phpcompatibility-paragonie
