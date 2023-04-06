@@ -42,9 +42,9 @@ before_install:
       echo '{"config": {"allow-plugins": {"dealerdirect/phpcodesniffer-composer-installer": true}}}' > ~/.composer/auth.json
     fi
   # Install PHP CodeSniffer.
-  - if [[ "WP_TRAVISCI" == "phpcs" ]]; then composer self-update; fi
-  - if [[ "WP_TRAVISCI" == "phpcs" ]]; then composer require squizlabs/php_codesniffer:dev-master; fi
-  - if [[ "WP_TRAVISCI" == "phpcs" ]]; then composer install; fi
+  - if [[ "$WP_TRAVISCI" == "phpcs" ]]; then composer self-update; fi
+  - if [[ "$WP_TRAVISCI" == "phpcs" ]]; then composer require squizlabs/php_codesniffer:dev-master; fi
+  - if [[ "$WP_TRAVISCI" == "phpcs" ]]; then composer install; fi
   - phpenv rehash
 
 before_script:
