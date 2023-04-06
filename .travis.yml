@@ -22,6 +22,9 @@ before_install:
     if [ ! -f ~/.composer/auth.json ]; then
       echo '{"config": {"allow-plugins": {"dealerdirect/phpcodesniffer-composer-installer": true}}}' > ~/.composer/auth.json
     fi
+  - composer global config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+  - composer global require squizlabs/php_codesniffer=* --dev
+  - composer global require dealerdirect/phpcodesniffer-composer-installer
 
 matrix:
   include:
@@ -57,13 +60,10 @@ before_script:
     fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
-      composer global config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
       composer global require wp-coding-standards/wpcs
       composer global require phpcompatibility/php-compatibility
       composer global require phpcompatibility/phpcompatibility-paragonie
       composer global require phpcompatibility/phpcompatibility-wp
-      composer global require squizlabs/php_codesniffer=* --dev
-      composer global require dealerdirect/phpcodesniffer-composer-installer
       export PATH="$PATH:$HOME/.composer/vendor/squizlabs/php_codesniffer/bin"
       phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs,$HOME/.composer/vendor/phpcompatibility/php-compatibility,$HOME/.composer/vendor/phpcompatibility/phpcompatibility-paragonie,$HOME/.composer/vendor/phpcompatibility/phpcompatibility-wp
     fi
