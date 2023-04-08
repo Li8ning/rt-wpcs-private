@@ -404,7 +404,7 @@ class Test_WPBFSlideshow extends WP_UnitTestCase {
 		// Add the attachment IDs to the wp_slideshow_image_ids option
 		update_option( 'wpbf_slideshow_image_ids', $image_id1 . ',' . $image_id2 );
 
-		$shortcode_output = do_shortcode( '[wpbfslideshow]' );
+		$shortcode_output = do_shortcode( '[wpbfslideshow id="1"]' );
 
 		// Assert that output contains the expected HTML.
 		$this->assertStringContainsString( '<img src="' . wp_get_attachment_image_url( $image_id1, 'full' ) . '" loading="lazy">', $shortcode_output, 'Output does not match the string' );
@@ -458,7 +458,7 @@ class Test_WPBFSlideshow extends WP_UnitTestCase {
 		// Set wpbf_slideshow_image_ids to an empty string.
 		update_option( 'wpbf_slideshow_image_ids', '' );
 
-		$shortcode_output = do_shortcode( '[wpbfslideshow]' );
+		$shortcode_output = do_shortcode( '[wpbfslideshow id="2"]' );
 
 		$this->assertEmpty( $shortcode_output, 'Output should be empty' );
 

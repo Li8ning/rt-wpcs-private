@@ -207,21 +207,26 @@ class WPBFSlideshow {
 
 		}
 		// Render the main page.
-		require plugin_dir_path( __FILE__ ) . '../templates/wpbfslideshow-admin.php';
+		include plugin_dir_path( __FILE__ ) . '../templates/wpbfslideshow-admin.php';
 	}
 
 	/**
 	 * Render the slider.
 	 *
 	 * @since 1.0.0
+	 * @param array $atts Shortcode attributes.
+	 * @return string Slider output.
 	 */
-	public function wpbf_slideshow_slider() {
+	public function wpbf_slideshow_slider( $atts ) {
 
-			// Render the slider.
-			ob_start();
-			require_once plugin_dir_path( __FILE__ ) . '../templates/wpbfslideshow-slider.php';
-			$content = ob_get_clean();
-			return $content;
+		// Validate shortcode attributes.
+		$id = isset( $atts['id'] ) ? sanitize_text_field( $atts['id'] ) : '';
+
+		// Render the slider.
+		ob_start();
+		include plugin_dir_path( __FILE__ ) . '../templates/wpbfslideshow-slider.php';
+		$content = ob_get_clean();
+		return $content;
 
 	}
 

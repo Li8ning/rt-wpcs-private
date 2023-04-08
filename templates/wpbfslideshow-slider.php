@@ -14,7 +14,7 @@ if ( ! empty( $get_image_ids ) ) {
 	?>
 
 <!-- Slider main container -->
-<div class="swiper" id="wpbf-swiper-slider">
+<div class="swiper wpbf-swiper-slider">
 
 	<!-- Additional required wrapper -->
 	<div class="swiper-wrapper">

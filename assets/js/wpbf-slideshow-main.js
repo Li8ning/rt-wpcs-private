@@ -1,4 +1,4 @@
-var swiper = new Swiper('#wpbf-swiper-slider.swiper', {
+var swiper = new Swiper('.wpbf-swiper-slider.swiper', {
   // Optional parameters
   direction: 'horizontal',
   loop: true,
