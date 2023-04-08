@@ -2,7 +2,7 @@
 /**
  * PHPUnit bootstrap file.
  *
- * @package Rt_Slideshow
+ * @package WPBFSlideshow
  */
 
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
