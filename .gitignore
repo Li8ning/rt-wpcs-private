@@ -1,0 +1,11 @@
+# Ignore directories
+/vendor/
+/bin/
+/assets/img/
+
+# Ignore files
+/composer.json
+/composer.lock
+/phpunit.xml.dist
+/phpcs.xml
+/.travis.yml
