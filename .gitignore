@@ -8,4 +8,5 @@
 /composer.lock
 /phpunit.xml.dist
 /phpcs.xml
+/.phpcs.xml.dist
 /.travis.yml
